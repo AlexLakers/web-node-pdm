@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    password: root
+    username: root
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5632/node_pdm_storage
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    open-in-view: false
+  liquibase:
+    contexts: dev
+server:
+  port: 8085
+
+logging:
+  file:
+    path: /
+    name: logg.log
+  level:
+    root: INFO
