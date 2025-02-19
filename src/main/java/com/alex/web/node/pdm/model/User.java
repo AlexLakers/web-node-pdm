@@ -1,5 +1,6 @@
 package com.alex.web.node.pdm.model;
 
+import com.alex.web.node.pdm.model.enums.Provider;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,6 +33,10 @@ public class User {
     @Column(unique = true,nullable = false)
     private String username;
 
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
     @ElementCollection
     @CollectionTable(name = "users_roles",joinColumns = @JoinColumn(name = "user_id"))
