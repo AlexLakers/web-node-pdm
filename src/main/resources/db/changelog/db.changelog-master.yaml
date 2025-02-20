@@ -2,4 +2,15 @@ databaseChangeLog:
   - include:
       file: db/changelog/1.0/db.changelog-1.0-init.sql
       context: dev
-
+  - include:
+      file: db/changelog/1.0/db.changelog-1.1.sql
+      context: dev
+  - include:
+      file: db/changelog/1.0/db.changelog-1.2-core-data.sql
+      context: dev
+  - include:
+      file: db/changelog/test/1.0/db.changelog-1.0-schema-test.sql
+      context: test
+  - include:
+      file: db/changelog/test/1.0/db.changelog-1.0-data-test.sql
+      context: test
