@@ -3,9 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
     <title>User</title>
 </head>
 <body>
-<span>User</span>
+<!--
+<form th:action="@{/users/{userId}/delete(userId=${user.id})}" th:if="${user.role.name() == 'ADMIN'}" method="post">
+    <button type="submit">Remove</button>
+</form>-->
+
+<header>
+    <div class="header">
+        <div th:insert="~{header}"></div>
+    </div>
+</header>
+
+<main>
+    <div class="user-container">
+        <h4>Updating a specific user</h4>
+        <div th:if="${errors}">
+            <span class="error" th:each="error : ${errors}" th:text="${error.defaultMessage}">Invalid Credentials</span>
+        </div>
+        <!--  th:action="@{/users/{userId}/update(userId=${user.id})}"-->
+        <!--    <form th:action="@{/masters/edit/{id}(id=${master.id})}" method="post" th:object="${master}">-->
+        <form th:action="@{/users/{userId}/update(userId=${user.id})}" id="updatingForm" method="post" th:object="${user}">
+            <label for="firstname">Firstname:
+                <input class="input-edit" type="text" name="firstname" id="firstname" th:value="*{firstname}" placeholder="firstname">
+            </label>
+            <label for="lastname">Lastname:
+                <input class="input-edit" type="text" name="lastname" id="lastname" th:value="*{lastname}" placeholder="lastname">
+            </label>
+            <label for="username">Username:
+                <input class="input-edit" type="text" name="username" th:value="*{username}" id="username"
+                       placeholder="Enter username">
+            </label>
+            <label for="birthday">Birthday:
+                <input class="input-edit" type="date" name="birthday" th:value="*{birthday}" id="birthday" placeholder="birthday">
+            </label><br>
+            <label for="provider">Provider:
+                <input class="input-edit" type="text" name="provider" th:value="*{provider}" id="provider" placeholder="provider">
+            </label><br>
+            <div class="button-container">
+                <button class="button-action" type="submit" form="updatingForm">Update</button>
+            </div>
+
+        </form>
+    </div>
+</main>
+<footer>
+    <div class="footer">
+        <div th:insert="~{footer}"></div>
+    </div>
+</footer>
 </body>
 </html>

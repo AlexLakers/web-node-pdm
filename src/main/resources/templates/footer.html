@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title></title>
+</head>
+<body>
+    <div th:fragment="footer" th:align="center">
+       <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2025</span>
+        <span>Mini PDM System</span>
+    </div>
+
+</body>
+</html>

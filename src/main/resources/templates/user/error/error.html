@@ -4,9 +4,25 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <title>Error page</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<span>error</span>
+<header>
+    <div class="header">
+        <div th:insert="~{header}"></div>
+    </div>
+</header>
+<main>
+    <!--<div th:if="${error}">-->
+    <span>Oops,the following error has been detected:</span>
+    <span class="error" th:text="'['+${error.code()}+'] '+'['+${error.message}+']'">Dummy Error</span>
+    <!-- </div>-->
+</main>
+<footer>
+    <div class="footer">
+        <div th:insert="~{footer}"></div>
+    </div>
+</footer>
 
 
 </body>
