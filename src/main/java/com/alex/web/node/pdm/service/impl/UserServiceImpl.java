@@ -1,5 +1,6 @@
 package com.alex.web.node.pdm.service.impl;
 
+import com.alex.web.node.pdm.config.CustomUserDetails;
 import com.alex.web.node.pdm.dto.NewUserDto;
 import com.alex.web.node.pdm.dto.UpdateUserDto;
 import com.alex.web.node.pdm.dto.UserDto;
@@ -10,12 +11,15 @@ import com.alex.web.node.pdm.mapper.user.UserMapper;
 import com.alex.web.node.pdm.repository.UserRepository;
 import com.alex.web.node.pdm.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,6 +28,22 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return getCustomUserDetails(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+
+    }
+
+    private Optional<CustomUserDetails> getCustomUserDetails(String username) {
+        return userRepository.findByUsername(username)
+                .map(userMapper::toCustomUserDetails);
+    }
+
+    public Optional<String> getCurrentName() {
+        return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .map(Authentication::getPrincipal)
+                .map(user -> ((UserDetails) user).getUsername());
+    }
 
     public UserDto findById(Long id) {
         return userRepository.findUserById(id)
@@ -31,10 +51,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("The user '%1$s' is not found".formatted(id)));
     }
 
+    // @PreAuthorize("hasAuthority('ADMIN')")
     public List<UserDto> findAll() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toUserDto)
+        return userMapper.toUserDtoList(userRepository.findAll());
+        /*userRepository.findAll().stream()
+        .map(userMapper::toUserDto)
                 .collect(Collectors.toList());
+*/
     }
 
     @Transactional
@@ -76,9 +99,20 @@ public class UserServiceImpl implements UserService {
                 }, () -> {
                     throw new EntityNotFoundException("The user '%1$s' is not found".formatted(id));
                 });
-
+                /*.map(user -> {
+                            userRepository.delete(user);
+                            userRepository.flush();
+                            return true;
+                        }
+                ).orElse(false);*/
     }
 
 
 
+
+
+       /* user==null ? new UserCreationException("User '%1$s' creation error".formatted(email))
+                :user;*/
+
 }
+
