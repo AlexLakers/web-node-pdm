@@ -3,13 +3,18 @@ spring:
     password: root
     username: root
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5632/node_pdm_storage
+    url: jdbc:postgresql://localhost:6532/root
   jpa:
     properties:
       hibernate:
         show_sql: true
         format_sql: true
     open-in-view: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
   liquibase:
     contexts: dev
 server:

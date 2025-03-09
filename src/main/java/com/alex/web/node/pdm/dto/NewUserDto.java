@@ -27,7 +27,6 @@ public record NewUserDto(
         String password,
 
         @NotNull(message = "The date should be not null")
-        @FutureOrPresent
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
                 /*@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)*/
         LocalDate birthday

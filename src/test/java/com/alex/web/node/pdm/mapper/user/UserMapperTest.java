@@ -27,35 +27,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserMapperTest {
-  /*  private User user;
-    private UserDto userDto;
-    private static final Long ID = 1L;
-    private final static LocalDate DATE = LocalDate.of(1993,11,1);
-    NewUserDto newUserDto;
-    @BeforeEach
-    void init() {
-        user = User.builder().id(ID)
-                .firstname("testFirstname").lastname("testLastname")
-                .username("testCurrentName")
-                .roles(Collections.singletonList(Role.builder().roleName(RoleName.ADMIN).build()))
-                .birthday(DATE)
-                .provider(Provider.DAO_LOCAL)
-                .password("testPassword").build();
-
-        userDto = new UserDto(ID, user.getUsername(), user.getFirstname()
-                , user.getLastname(), DATE,
-                List.of(RoleName.ADMIN.name()), Provider.DAO_LOCAL.name());
-        newUserDto = new NewUserDto(user.getUsername(), user.getFirstname(), user.getUsername(),
-                user.getPassword(), DATE);
-    }
-    @Test
-    void test(){
-        var res=new UserMapperImpl(new UserMapperUtil(PasswordEncoderFactories.createDelegatingPasswordEncoder()))
-                .toUserDtoList(Arrays.asList(user));
-        System.out.println();
-
-    }*/
-
     private User user;
     private UserDto userDto;
     private static final Long ID = 1L;

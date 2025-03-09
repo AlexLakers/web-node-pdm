@@ -11,7 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-@RestControllerAdvice(basePackages = "com.alex.prewebspec.api.rest")
+
+@RestControllerAdvice(basePackages = "com.alex.web.node.pdm.api.rest")
 @Slf4j
 public class RestErrorHandler /*extends ResponseEntityExceptionHandler */{
 
