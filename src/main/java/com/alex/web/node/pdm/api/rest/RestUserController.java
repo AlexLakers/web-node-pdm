@@ -1,5 +1,6 @@
-package com.alex.web.node.pdm.controller.api.rest;
+package com.alex.web.node.pdm.api.rest;
 
+import com.alex.web.node.pdm.config.CustomUserDetails;
 import com.alex.web.node.pdm.dto.NewUserDto;
 import com.alex.web.node.pdm.dto.UpdateUserDto;
 import com.alex.web.node.pdm.dto.UserDto;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +30,15 @@ public class RestUserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
+    @PreAuthorize("#authUser.id==#id OR hasAuthority('ADMIN')")
+    public ResponseEntity<UserDto> findById(@PathVariable Long id,
+                                            @AuthenticationPrincipal CustomUserDetails authUser) {
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(userService.findById(id));
 
 
     }
-
 
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll() {
@@ -44,9 +48,10 @@ public class RestUserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("#authUser.id==#id OR hasAuthority('ADMIN')")
     public ResponseEntity<UserDto> update(@PathVariable Long id,
-                                          @RequestBody UpdateUserDto updateUserDto
-                                          ) {
+                                          @RequestBody UpdateUserDto updateUserDto,
+                                          @AuthenticationPrincipal CustomUserDetails authUser) {
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(userService.update(id, updateUserDto));
@@ -54,7 +59,9 @@ public class RestUserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    @PreAuthorize("#authUser.id==#id OR hasAuthority('ADMIN')")
+    public ResponseEntity<?> delete(@PathVariable Long id,
+                                    @AuthenticationPrincipal CustomUserDetails authUser) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
 

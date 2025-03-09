@@ -2,6 +2,7 @@ package com.alex.web.node.pdm.service;
 
 
 
+import com.alex.web.node.pdm.config.CustomUserDetails;
 import com.alex.web.node.pdm.dto.NewUserDto;
 import com.alex.web.node.pdm.dto.UpdateUserDto;
 import com.alex.web.node.pdm.dto.UserDto;
@@ -15,12 +16,16 @@ import com.alex.web.node.pdm.model.enums.Provider;
 import com.alex.web.node.pdm.model.enums.RoleName;
 import com.alex.web.node.pdm.repository.UserRepository;
 import com.alex.web.node.pdm.service.impl.UserServiceImpl;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.time.LocalDate;
@@ -46,7 +51,7 @@ class UserServiceTest {
                 .password("testPassword")
                 .roles(Collections.singletonList(Role.builder().roleName(RoleName.ADMIN).build())).username("testUser")
                 .build();
-        List<String> roles = Collections.singletonList("ADMIN");
+        List<String> roles = Collections.singletonList(Role.builder().roleName(RoleName.ADMIN).build().getAuthority());
         userDto = new UserDto(ID, user.getUsername(), user.getFirstname(), user.getLastname(), DATE, roles, Provider.DAO_LOCAL.name());
     }
 
@@ -56,11 +61,23 @@ class UserServiceTest {
     @Mock
     private UserMapper userMapper;
 
-
     @InjectMocks
     private UserServiceImpl userService;
 
 
+    @Test
+    void givenUsername_whenLoadUser_thenReturnUserSecurity() {
+        CustomUserDetails customUserDetails= new CustomUserDetails("testUser", "testPassword",
+                Collections.singletonList(new SimpleGrantedAuthority("ADMIN")), ID);
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        when(userMapper.toCustomUserDetails(user)).thenReturn(customUserDetails);
+
+        UserDetails actual = userService.loadUserByUsername("testUser");
+
+        assertThat(actual)
+                .isExactlyInstanceOf(CustomUserDetails.class)
+                .isEqualTo(customUserDetails);
+    }
 
     @Test
     void givenId_whenFindUser_thenReturnCorrectUserDto() {
@@ -74,16 +91,16 @@ class UserServiceTest {
 
     @Test
     void findAll_thenReturnListUserDto() {
-        List<User> users = Arrays.asList(user);
-        List<UserDto> expected = Arrays.asList(userDto);
-
+        List<User> users = Arrays.asList(user, User.builder().id(ID + 1).build());
+        List<String> roles = Collections.singletonList(Role.builder().roleName(RoleName.ADMIN).build().getAuthority());
+        List<UserDto> expected = Arrays.asList(new UserDto(ID, user.getUsername(), user.getFirstname(), user.getLastname(), DATE, roles,Provider.DAO_LOCAL.name()),
+                new UserDto(ID + 1L, user.getUsername(), user.getFirstname(), user.getLastname(), DATE, roles,Provider.DAO_LOCAL.name()));
         when(userRepository.findAll()).thenReturn(users);
-        when(userMapper.toUserDto(user)).thenReturn(userDto);
-
+        when(userMapper.toUserDtoList(users)).thenReturn(expected);
 
         List<UserDto> actual = userService.findAll();
 
-        assertThat(actual).hasSize(1).isEqualTo(expected);
+        assertThat(actual).hasSize(2).isEqualTo(expected);
 
     }
 
@@ -100,7 +117,6 @@ class UserServiceTest {
         when(userMapper.toUserDto(user)).thenReturn(expected);
 
         UserDto actual = userService.update(ID, updateUserDto);
-
 
         assertThat(actual).isEqualTo(expected);
 
@@ -180,14 +196,10 @@ class UserServiceTest {
                 .isThrownBy(()->userService.delete(ID))
                 .withMessage("The user '%1$s' is not found".formatted(ID));
 
-
-
         verify(userRepository, times(1)).findUserById(ID);
         verify(userRepository, never()).delete(any(User.class));
         verify(userRepository, never()).flush();
         verifyNoMoreInteractions(userRepository);
-
-
     }
 
 
