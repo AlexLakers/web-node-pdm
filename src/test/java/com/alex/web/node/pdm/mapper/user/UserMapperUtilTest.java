@@ -14,17 +14,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.stream.Stream;
 
 
-
 class UserMapperUtilTest {
     private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    private final UserMapperUtil userMapperUtil= new UserMapperUtil(passwordEncoder);
+    private final UserMapperUtil userMapperUtil = new UserMapperUtil(passwordEncoder);
 
     @ParameterizedTest
     @MethodSource("getValidArgs")
     void givenRole_whenMap_theReturnRoleAsString(RoleName roleName, String expected) {
-        Role giveRole=Role.builder().roleName(roleName).build();
+        Role giveRole = Role.builder().roleName(roleName).build();
 
-        String actual=userMapperUtil.roleToString(giveRole);
+        String actual = userMapperUtil.roleToString(giveRole);
 
         Assertions.assertThat(actual).isEqualTo(expected);
 
@@ -36,6 +35,5 @@ class UserMapperUtilTest {
                 Arguments.of(RoleName.ADMIN, RoleName.ADMIN.name())
         );
     }
-
 
 }

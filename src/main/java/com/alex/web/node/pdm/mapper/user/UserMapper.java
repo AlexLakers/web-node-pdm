@@ -1,9 +1,13 @@
 package com.alex.web.node.pdm.mapper.user;
 
+import com.alex.web.node.pdm.config.CustomUserDetails;
 import com.alex.web.node.pdm.dto.NewUserDto;
 import com.alex.web.node.pdm.dto.UpdateUserDto;
 import com.alex.web.node.pdm.dto.UserDto;
+import com.alex.web.node.pdm.model.Role;
 import com.alex.web.node.pdm.model.User;
+import com.alex.web.node.pdm.model.enums.Provider;
+import com.alex.web.node.pdm.model.enums.RoleName;
 import org.mapstruct.*;
 import org.springframework.stereotype.Component;
 
@@ -26,13 +30,24 @@ public interface UserMapper {
     List<UserDto> toUserDtoList(List<User> users);
 
     @Mapping(target = "password",qualifiedByName = {"encryptPassword"}, source = "password")
-   /* @Mapping(target = "roles",qualifiedByName = "", source = "roles")*/
+        /* @Mapping(target = "roles",qualifiedByName = "", source = "roles")*/
     User toUserFromNewUserDto(NewUserDto newUserDto);
+    /* @Mapping(target = "authorities",source = "roles")
+     CustomUserSecurity toUserSecurity(User user);*/
+    @Mapping(target = "authorities",source = "roles")
+    CustomUserDetails toCustomUserDetails(User user);
 
+    /*@Mapping(target = "authorities",source = "roles")
+     CustomOidcUser toCustomOidcUser(User user, OidcUserRequest userRequest);*/
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     void updateUser(@MappingTarget User user,  UpdateUserDto updateUserDto);
 
+    @AfterMapping
+    default void setDefaultRole(@MappingTarget User user,NewUserDto newUserDto){
+        user.setRoles(Collections.singletonList(Role.builder().roleName(RoleName.USER).build()));
+        user.setProvider(Provider.DAO_LOCAL);
 
+    }
 
 }

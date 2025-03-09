@@ -17,13 +17,12 @@ public class UserMapperUtil {
     private final PasswordEncoder passwordEncoder;
 
     @Named("roleToString")
-     public String roleToString(Role role){
+    public String roleToString(Role role){
         return role.getRoleName().name();
     }
 
     @Named("encryptPassword")
     public String encryptPassword(String password){
-
         return passwordEncoder.encode(password);
     }
     @Named("providerToString")
@@ -31,7 +30,11 @@ public class UserMapperUtil {
         return provider.name();
     }
 
-
+ /*   @AfterMapping
+    public void setDefaultRoleAndProvider(@MappingTarget User user, NewUserDto newUserDto){
+        user.setRoles(Collections.singletonList(Role.builder().roleName(RoleName.USER).build()));
+        user.setProvider(Provider.DAO_LOCAL);
+    }*/
 
 
 }

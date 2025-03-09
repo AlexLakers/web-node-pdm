@@ -1,5 +1,6 @@
 package com.alex.web.node.pdm.mapper.user;
 
+import com.alex.web.node.pdm.config.CustomUserDetails;
 import com.alex.web.node.pdm.dto.NewUserDto;
 import com.alex.web.node.pdm.dto.UpdateUserDto;
 import com.alex.web.node.pdm.dto.UserDto;
@@ -13,31 +14,24 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+
 import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
 class UserMapperTest {
-
-    private User user;
+  /*  private User user;
     private UserDto userDto;
     private static final Long ID = 1L;
     private final static LocalDate DATE = LocalDate.of(1993,11,1);
-
-    @Mock
-    private UserMapperUtil userMapperUtil;
-
-    @InjectMocks
-    private UserMapperImpl userMapper;//changeUSerMApperImpl
-
+    NewUserDto newUserDto;
     @BeforeEach
     void init() {
         user = User.builder().id(ID)
@@ -51,6 +45,41 @@ class UserMapperTest {
         userDto = new UserDto(ID, user.getUsername(), user.getFirstname()
                 , user.getLastname(), DATE,
                 List.of(RoleName.ADMIN.name()), Provider.DAO_LOCAL.name());
+        newUserDto = new NewUserDto(user.getUsername(), user.getFirstname(), user.getUsername(),
+                user.getPassword(), DATE);
+    }
+    @Test
+    void test(){
+        var res=new UserMapperImpl(new UserMapperUtil(PasswordEncoderFactories.createDelegatingPasswordEncoder()))
+                .toUserDtoList(Arrays.asList(user));
+        System.out.println();
+
+    }*/
+
+    private User user;
+    private UserDto userDto;
+    private static final Long ID = 1L;
+    private final static LocalDate DATE = LocalDate.of(1993,11,1);
+
+    @Mock
+    private UserMapperUtil userMapperUtil;
+
+    @InjectMocks
+    private UserMapperImpl userMapper;
+
+    @BeforeEach
+    void init() {
+        user = User.builder().id(ID)
+                .firstname("testFirstname").lastname("testLastname")
+                .username("testCurrentName")
+                .roles(Collections.singletonList(Role.builder().roleName(RoleName.ADMIN).build()))
+                .birthday(DATE)
+                .provider(Provider.DAO_LOCAL)
+                .password("testPassword").build();
+
+        userDto = new UserDto(ID, user.getUsername(), user.getFirstname()
+                , user.getLastname(), DATE,
+                List.of(RoleName.ADMIN.name()),Provider.DAO_LOCAL.name());
     }
 
     @Test
@@ -60,7 +89,16 @@ class UserMapperTest {
 
         UserDto actual = userMapper.toUserDto(user);
 
-        assertThat(actual).isEqualTo(userDto);
+        Assertions.assertThat(actual).isEqualTo(userDto);
+    }
+    @Test
+    void givenUser_whenMap_thenReturnCorrectSecurityUser(){
+        CustomUserDetails customUserDetails =new CustomUserDetails(user.getUsername(),user.getPassword(),user.getRoles(),user.getId());
+
+        CustomUserDetails actual=userMapper.toCustomUserDetails(user);
+
+        Assertions.assertThat(actual).isEqualTo(customUserDetails);
+
     }
 
     @Test
@@ -72,7 +110,7 @@ class UserMapperTest {
 
         List<UserDto> actual = userMapper.toUserDtoList(givenUserList);
 
-        assertThat(actual).hasSize(1).isEqualTo(expected);
+        Assertions.assertThat(actual).hasSize(1).isEqualTo(expected);
     }
 
     @Test
@@ -82,7 +120,7 @@ class UserMapperTest {
 
         User actual = userMapper.toUserFromNewUserDto(givenNewUserDto);
 
-        assertThat(actual).isEqualTo(user);
+        Assertions.assertThat(actual).isEqualTo(user);
 
     }
 
@@ -103,7 +141,7 @@ class UserMapperTest {
 
         userMapper.updateUser(user, updateUserDto);
 
-        assertThat(user).isNotNull().isEqualTo(expected);
+        Assertions.assertThat(user).isNotNull().isEqualTo(expected);
 
     }
 }
