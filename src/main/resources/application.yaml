@@ -15,6 +15,10 @@ spring:
       client:
         registration:
           google:
+            client-id: **************
+            client-secret: **************
+            scope: openid,profile,email
+            redirect-uri: http://localhost:8085/login/oauth2/code/google
   liquibase:
     contexts: dev
 server:
