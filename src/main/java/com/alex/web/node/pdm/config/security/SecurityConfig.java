@@ -26,7 +26,7 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/login", "/users/registration").permitAll()
                         .requestMatchers(HttpMethod.GET, "/error/**").permitAll()
-                        .requestMatchers("http://localhost:8081/login/oauth2/code/google").permitAll()
+                        .requestMatchers("http://localhost:8085/login/oauth2/code/google").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users").hasAuthority(RoleName.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/users/delete").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
