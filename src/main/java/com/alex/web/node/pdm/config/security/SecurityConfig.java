@@ -25,22 +25,20 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/login", "/users/registration").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/error/**").permitAll()
+                        .requestMatchers("http://localhost:8081/login/oauth2/code/google").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users").hasAuthority(RoleName.ADMIN.name())
                         .requestMatchers(HttpMethod.GET, "/users/{id}").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/users/delete").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/users/{id}/update").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
-
-                        .requestMatchers(HttpMethod.GET, "/error/**").permitAll()
-                        .requestMatchers("/specifications/**").permitAll()
-                        .anyRequest().permitAll())
-                //.requestMatchers("http://localhost:8085/login/oauth2/code/google").permitAll())
+                        .requestMatchers("/specifications/**").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
+                .anyRequest().denyAll())
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .defaultSuccessUrl("/index")
-                        .permitAll())//Change to /specification
+                        .defaultSuccessUrl("/specifications"))
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login")
-                        .defaultSuccessUrl("/users")// change specifications
+                        .defaultSuccessUrl("/specifications")
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                 .oidcUserService(userService))
                 )

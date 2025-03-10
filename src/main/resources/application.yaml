@@ -3,7 +3,7 @@ spring:
     password: root
     username: root
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:6532/root
+    url: jdbc:postgresql://localhost:5632/node_pdm_storage
   jpa:
     properties:
       hibernate:
@@ -15,10 +15,7 @@ spring:
       client:
         registration:
           google:
-            client-id: **************
-            client-secret: **************
-            scope: openid,profile,email
-            redirect-uri: http://localhost:8085/login/oauth2/code/google
+
   liquibase:
     contexts: dev
 server:
