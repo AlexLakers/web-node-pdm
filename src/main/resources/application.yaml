@@ -10,6 +10,16 @@ spring:
         show_sql: true
         format_sql: true
     open-in-view: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 862401362633-387mhcrc96o2am9juqhb1eoifj70c9os.apps.googleusercontent.com
+            client-secret: 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
+            scope: openid,profile,email
+            redirect-uri: http://localhost:8085/login/oauth2/code/google
+
   liquibase:
     contexts: dev
 server:

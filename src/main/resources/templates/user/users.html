@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="header">
+        <div th:insert="~{header}"></div>
+    </div>
+</header>
+<main>
+    <div class="user-container">
+        <div class="column">
+            <h4>Users</h4>
+            <form th:action="@{/users/delete}" id="deletingForm" method="post">
+
+                <select id="user-list" name="userId" size="10">
+                    <option th:each="user:${users}"
+                            th:value="${user.id()}"
+                            th:text="${user.id()}+' '+${user.firstname()}+' '
+            +${user.lastname()}+' '+${user.username()}+' '+${user.birthday()}+' '+${user.roles()}+' '+${user.provider()}">
+
+                    </option>
+                </select>
+            </form>
+            <div class="button-container">
+                <button class="button-action" type="submit" form="deletingForm">Delete</button>
+                <button class="button-action" type="button" onclick="updateUser()">Update</button>
+            </div>
+        </div>
+    </div>
+</main>
+<footer>
+    <div class="footer">
+        <div th:insert="~{footer}"></div>
+    </div>
+</footer>
+<!--<script>
+    function updateUser() {
+        var userSelect = document.getElementById("user-list");
+        let selectedUserId = userSelect.value
+        if (selectedUserId) {
+            window.location.href = '/users/'+selectedUserId;
+        } else {
+            alert("Please,choose a specific user for updating.");
+        }
+    }
+</script>-->
+</body>
+</html>
+
+<!--
+<form th:action="@{/users/{userId}/delete(userId=${user.id})}" th:if="${user.role.name() == 'ADMIN'}" method="post">
+    <button type="submit">Remove</button>
+</form>-->
