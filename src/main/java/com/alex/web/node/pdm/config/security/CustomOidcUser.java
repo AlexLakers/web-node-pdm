@@ -12,10 +12,11 @@ import java.util.Map;
 
 public class CustomOidcUser extends CustomUserDetails implements OidcUser {
 
-    private OidcUser oidcUser;
+    private final OidcUser oidcUser;
 
     public CustomOidcUser(OidcUser oidcUser, Long id) {
         super(oidcUser.getClaim("email"), null, oidcUser.getAuthorities(), id);
+        this.oidcUser=oidcUser;
     }
 
 

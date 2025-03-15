@@ -2,9 +2,9 @@ package com.alex.web.node.pdm;
 
 
 import com.alex.web.node.pdm.config.CustomUserDetails;
-import com.alex.web.node.pdm.dto.NewUserDto;
-import com.alex.web.node.pdm.dto.UpdateUserDto;
-import com.alex.web.node.pdm.dto.UserDto;
+import com.alex.web.node.pdm.dto.user.NewUserDto;
+import com.alex.web.node.pdm.dto.user.UpdateUserDto;
+import com.alex.web.node.pdm.dto.user.UserDto;
 import com.alex.web.node.pdm.exception.EntityNotFoundException;
 import com.alex.web.node.pdm.exception.UsernameAlreadyExistsException;
 import com.alex.web.node.pdm.model.Role;
@@ -17,9 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +25,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestConstructor;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 

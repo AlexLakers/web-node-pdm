@@ -1,8 +1,8 @@
 package com.alex.web.node.pdm.controller.api.rest;
 
-import com.alex.web.node.pdm.dto.NewUserDto;
-import com.alex.web.node.pdm.dto.UpdateUserDto;
-import com.alex.web.node.pdm.dto.UserDto;
+import com.alex.web.node.pdm.dto.user.NewUserDto;
+import com.alex.web.node.pdm.dto.user.UpdateUserDto;
+import com.alex.web.node.pdm.dto.user.UserDto;
 import com.alex.web.node.pdm.exception.EntityNotFoundException;
 import com.alex.web.node.pdm.model.Role;
 import com.alex.web.node.pdm.model.User;

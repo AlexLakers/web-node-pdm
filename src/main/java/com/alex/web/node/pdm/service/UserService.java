@@ -1,8 +1,8 @@
 package com.alex.web.node.pdm.service;
 
-import com.alex.web.node.pdm.dto.NewUserDto;
-import com.alex.web.node.pdm.dto.UpdateUserDto;
-import com.alex.web.node.pdm.dto.UserDto;
+import com.alex.web.node.pdm.dto.user.NewUserDto;
+import com.alex.web.node.pdm.dto.user.UpdateUserDto;
+import com.alex.web.node.pdm.dto.user.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;

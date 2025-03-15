@@ -1,6 +1,6 @@
 package com.alex.web.node.pdm.controller;
 
-import com.alex.web.node.pdm.dto.NewUserDto;
+import com.alex.web.node.pdm.dto.user.NewUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

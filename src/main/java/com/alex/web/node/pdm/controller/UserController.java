@@ -1,8 +1,8 @@
 package com.alex.web.node.pdm.controller;
 
 import com.alex.web.node.pdm.config.CustomUserDetails;
-import com.alex.web.node.pdm.dto.NewUserDto;
-import com.alex.web.node.pdm.dto.UpdateUserDto;
+import com.alex.web.node.pdm.dto.user.NewUserDto;
+import com.alex.web.node.pdm.dto.user.UpdateUserDto;
 import com.alex.web.node.pdm.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
