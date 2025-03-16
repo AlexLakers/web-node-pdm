@@ -8,7 +8,7 @@ public class OrderDirectionValidator implements ConstraintValidator<ValidOrderDi
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        if (s == null) return true;
+        if (s == null||s.isEmpty()) return true;
         try {
             Sort.Direction.fromString(s);
             return true;

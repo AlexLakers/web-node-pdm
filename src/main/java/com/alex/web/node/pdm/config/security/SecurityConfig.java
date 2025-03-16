@@ -24,7 +24,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/login", "/users/registration").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/login", "/registration").permitAll()
                         .requestMatchers(HttpMethod.GET, "/error/**").permitAll()
                         .requestMatchers("http://localhost:8085/login/oauth2/code/google").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users").hasAuthority(RoleName.ADMIN.name())

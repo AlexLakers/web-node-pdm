@@ -6,7 +6,7 @@ function doLogout() {
 }
 
 function doRegistration() {
-    window.location.href = "/admin//users/registration"
+    window.location.href = "/registration"
 }
 
 function doLogin(){

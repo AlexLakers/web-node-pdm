@@ -1,6 +1,6 @@
 package com.alex.web.node.pdm.mapper.user;
 
-import com.alex.web.node.pdm.config.CustomUserDetails;
+import com.alex.web.node.pdm.config.security.CustomUserDetails;
 import com.alex.web.node.pdm.dto.user.NewUserDto;
 import com.alex.web.node.pdm.dto.user.UpdateUserDto;
 import com.alex.web.node.pdm.dto.user.UserDto;

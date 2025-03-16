@@ -1,10 +1,11 @@
 package com.alex.web.node.pdm.api.rest;
 
-import com.alex.web.node.pdm.config.CustomUserDetails;
+import com.alex.web.node.pdm.config.security.CustomUserDetails;
 import com.alex.web.node.pdm.dto.specification.SpecificationDto;
 import com.alex.web.node.pdm.dto.user.NewUserDto;
 import com.alex.web.node.pdm.dto.user.UpdateUserDto;
 import com.alex.web.node.pdm.dto.user.UserDto;
+import com.alex.web.node.pdm.service.SpecificationService;
 import com.alex.web.node.pdm.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import java.util.List;
 public class RestUserController {
 
     private final UserService userService;
+    private final SpecificationService specificationService;
 
     @PostMapping
     public ResponseEntity<UserDto> create(@Validated @RequestBody NewUserDto newUserDto) {

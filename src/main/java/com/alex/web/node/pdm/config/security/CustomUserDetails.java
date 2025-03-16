@@ -1,4 +1,4 @@
-package com.alex.web.node.pdm.config;
+package com.alex.web.node.pdm.config.security;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
