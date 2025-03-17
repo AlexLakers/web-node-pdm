@@ -1,8 +1,6 @@
 package com.alex.web.node.pdm.exception.hundler;
 
-import com.alex.web.node.pdm.exception.EntityCreationException;
-import com.alex.web.node.pdm.exception.EntityNotFoundException;
-import com.alex.web.node.pdm.exception.UsernameAlreadyExistsException;
+import com.alex.web.node.pdm.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -45,6 +43,21 @@ public class ErrorHandler {
         model.addAttribute("error",new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage()));
         return "error/error";
     }
+    @ExceptionHandler(CodeAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleCodeAlreadyExists(CodeAlreadyExistsException ex, Model model){
+        log.warn(ex.getMessage());
+        model.addAttribute("error",new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage()));
+        return "error/error";
+    }
+    @ExceptionHandler(NameAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleNameAlreadyExists(NameAlreadyExistsException ex, Model model){
+        log.warn(ex.getMessage());
+        model.addAttribute("error",new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage()));
+        return "error/error";
+    }
+
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleBindException(BindException ex, Model model) {
@@ -59,7 +72,6 @@ public class ErrorHandler {
         model.addAttribute("error",new ErrorResponse(HttpStatus.FORBIDDEN.value(),ex.getMessage()));
         return "error/error";
     }
-
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleException(Exception ex, Model model){

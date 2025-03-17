@@ -1,8 +1,6 @@
 package com.alex.web.node.pdm.exception.hundler;
 
-import com.alex.web.node.pdm.exception.EntityCreationException;
-import com.alex.web.node.pdm.exception.EntityNotFoundException;
-import com.alex.web.node.pdm.exception.UsernameAlreadyExistsException;
+import com.alex.web.node.pdm.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +35,16 @@ public class RestErrorHandler /*extends ResponseEntityExceptionHandler */{
         log.warn(ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+    @ExceptionHandler(CodeAlreadyExistsException.class)
+    public ResponseEntity<?> handleCodeAlreadyExistsException(CodeAlreadyExistsException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+    @ExceptionHandler(NameAlreadyExistsException.class)
+    public ResponseEntity<?> handleCodeAlreadyExistsException(NameAlreadyExistsException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
         log.warn( ex.getMessage());
@@ -48,11 +56,11 @@ public class RestErrorHandler /*extends ResponseEntityExceptionHandler */{
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
+   /* @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException(Exception ex){
         log.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-    }
+    }*/
 
 
 }
