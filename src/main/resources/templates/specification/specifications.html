@@ -1,21 +1,98 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Specifications</title>
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
-    <title>Specs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
 <header>
     <div class="header">
         <div th:insert="~{header}"></div>
     </div>
 </header>
-
 <main>
-    <span>specifications page</span>
+    <h4>Dynamic Filter</h4>
+    <div class="container">
+        <div class="column">
+            <div th:if="${errorsSearch}">
+                <span class="error" th:each="error : ${errorsSearch}" th:text="${error.defaultMessage}">Invalid Data</span>
+            </div>
+            <form action="/specifications">
+                <label for="userId">UserId:
+                    <input type="number" class="input-edit" id="userId" name="userId" th:value="${search.userId()}"
+                           placeholder="Input user ID">
+                </label>
+                <label for="code">Code:
+                    <input class="input-edit" type="text" id="code" name="code" th:value="${search.code()}"
+                           placeholder="Input unique code">
+                </label>
+                <label for="pageSize">PageSize:
+                    <input class="input-edit" type="number" id="pageSize" name="pageSize" th:value="${search.pageSize()}"
+                           placeholder="Input page size">
+                </label>
+                <label for="pageNumber">PageNumber:
+                    <input class="input-edit" type="number" id="pageNumber" name="pageNumber" th:value="${search.pageNumber()}"
+                           placeholder="Input page size">
+                </label>
+                <label for="orderDirection">OrderDirection:
+                    <input class="input-edit" type="text" id="orderDirection" name="orderDirection"
+                           th:value="${search.orderDirection()}"
+                           placeholder="ASC/DESC">
+                </label>
+                <label for="orderDirection">OrderColumn:
+                    <input class="input-edit" type="text" id="orderColumn" name="orderColumn" th:value="${search.orderDirection()}"
+                           placeholder="Input order column">
+                </label>
+                <div class="button-container">
+                    <button class="button-action" type="submit">search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <h4>Specifications</h4>
+    <div class="container">
+        <div class="column">
+            <form th:action="@{/specifications/delete}" id="deletingForm" method="post">
+                <select id="spec-list" name="specId" size="15">
+                    <option th:each="spec : ${page.content}"
+                            th:value="${spec.id()}"
+                            th:text="${spec.id()}+ ' '+${spec.code()}+' '+${spec.amount()}+' '
+                            +${spec.desc()}+' '+${spec.userId()}+' '+${spec.detailsIds()}">
+                    </option>
+                </select>
+            </form>
+            <div class="button-container">
+                <button class="button-action" type="button" onClick="showDetailsBySpecId()">Show details</button>
+                <button class="button-action" type="submit" form="deletingForm">Delete</button>
+                <button class="button-action" type="button" onclick="updateSpecification()">Update</button>
+            </div>
+        </div>
+    </div>
+    <h4>Create a new specification</h4>
+    <div class="container">
+        <div class="column">
+            <div th:if="${errors}">
+                <span class="error" th:each="error : ${errors}" th:text="${error.defaultMessage}">Invalid Data</span>
+            </div>
+            <form th:action="@{/specifications}" method="post" id="creatingForm">
+                <div>
+                    <label for="codeId">Code:
+                        <input type="text" id="codeId" name="code" placeholder="Input unique code">
+                    </label>
+                    <label for="descId">Description:
+                        <input type="text" id="descId" name="desc" placeholder="Input description">
+                    </label>
+                </div>
+                <div class="button-container">
+                    <button class="button-action" type="submit" form="creatingForm">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </main>
 <footer>
     <div class="footer">
