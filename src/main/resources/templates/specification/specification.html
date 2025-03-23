@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
+    <title>User</title>
+</head>
+<body>
+<!--
+<form th:action="@{/users/{userId}/delete(userId=${user.id})}" th:if="${user.role.name() == 'ADMIN'}" method="post">
+    <button type="submit">Remove</button>
+</form>-->
+
+<header>
+    <div class="header">
+        <div th:insert="~{header}"></div>
+    </div>
+</header>
+
+<main>
+    <div class="user-container">
+        <h4>Updating a specific specification</h4>
+        <div th:if="${errors}">
+            <span class="error" th:each="error : ${errors}" th:text="${error.defaultMessage}">Invalid Input Data</span>
+        </div>
+        <!--  th:action="@{/users/{userId}/update(userId=${user.id})}"-->
+        <!--    <form th:action="@{/masters/edit/{id}(id=${master.id})}" method="post" th:object="${master}">-->
+        <form th:action="@{/specifications/{specId}/update(specId=${spec.id})}" id="updatingForm" method="post"
+              th:object="${spec}">
+            <label for="code">Code:
+                <input class="input-edit" type="text" name="code" id="code" th:value="*{code}" placeholder="code">
+            </label>
+            <label for="desc">Lastname:
+                <input class="input-edit" type="text" name="desc" id="desc" th:value="*{desc}" placeholder="desc">
+            </label><br>
+            <div class="button-container">
+                <button class="button-action" type="submit" form="updatingForm">Update</button>
+            </div>
+
+        </form>
+    </div>
+</main>
+<footer>
+    <div class="footer">
+        <div th:insert="~{footer}"></div>
+    </div>
+</footer>
+</body>
+</html>

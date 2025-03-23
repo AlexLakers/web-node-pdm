@@ -1,8 +1,8 @@
 package com.alex.web.node.pdm.controller;
 
-import com.alex.web.node.pdm.config.CustomUserDetails;
-import com.alex.web.node.pdm.dto.NewUserDto;
-import com.alex.web.node.pdm.dto.UpdateUserDto;
+import com.alex.web.node.pdm.config.security.CustomUserDetails;
+import com.alex.web.node.pdm.dto.user.NewUserDto;
+import com.alex.web.node.pdm.dto.user.UpdateUserDto;
 import com.alex.web.node.pdm.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +33,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/registration";
         }
+
         userService.create(user);
         return "redirect:/login";
     }
@@ -40,17 +41,19 @@ public class UserController {
     @GetMapping("/{id}")
     @PreAuthorize("#authUser.id==#id OR hasAuthority('ADMIN')") //move to rest controller
     public String findById(@PathVariable("id") Long id, Model model,
-                           @RequestHeader(defaultValue = "/admin/users") String referrer,
+                           @RequestHeader(required = false) String referer,
                            @AuthenticationPrincipal CustomUserDetails authUser) {
-        model.addAllAttributes(Map.of("user", userService.findById(id), "referrer", referrer));
+        model.addAllAttributes(Map.of("user", userService.findById(id), "referer", referer));
         return "user/user";
     }
 
     @GetMapping
-    /*    @PreAuthorize("hasAuthority('ADMIN')")*/
-    public String findAll(Model model, @AuthenticationPrincipal CustomUserDetails authUser) {
-        System.out.println(authUser);
-        model.addAttribute("users",userService.findAll());
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String findAll(Model model,
+                          @AuthenticationPrincipal CustomUserDetails authUser,
+                          @ModelAttribute  @RequestHeader(required = false) String referer
+    ) {
+        model.addAllAttributes(Map.of("users", userService.findAll(), "referer", referer));
         return "user/users";
     }
 
@@ -72,9 +75,9 @@ public class UserController {
 
     /* @ResponseStatus(HttpStatus.NO_CONTENT)*/
     @PostMapping("/delete")
-
     public String delete(@RequestParam("userId") Long id,
-                         @AuthenticationPrincipal CustomUserDetails authUser) {
+                         @AuthenticationPrincipal CustomUserDetails authUser
+    ) {
         userService.delete(id);
         return "redirect:/users";
     }

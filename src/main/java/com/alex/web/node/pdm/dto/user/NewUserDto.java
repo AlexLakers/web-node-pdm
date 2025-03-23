@@ -1,9 +1,8 @@
-package com.alex.web.node.pdm.dto;
+package com.alex.web.node.pdm.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.experimental.FieldNameConstants;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 @FieldNameConstants

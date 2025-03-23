@@ -1,4 +1,4 @@
-package com.alex.web.node.pdm.dto;
+package com.alex.web.node.pdm.dto.user;
 
 import jakarta.validation.constraints.*;
 import lombok.experimental.FieldNameConstants;

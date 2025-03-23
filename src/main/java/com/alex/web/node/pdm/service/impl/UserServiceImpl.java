@@ -1,10 +1,10 @@
 package com.alex.web.node.pdm.service.impl;
 
-import com.alex.web.node.pdm.config.CustomUserDetails;
+import com.alex.web.node.pdm.config.security.CustomUserDetails;
 import com.alex.web.node.pdm.config.security.CustomOidcUser;
-import com.alex.web.node.pdm.dto.NewUserDto;
-import com.alex.web.node.pdm.dto.UpdateUserDto;
-import com.alex.web.node.pdm.dto.UserDto;
+import com.alex.web.node.pdm.dto.user.NewUserDto;
+import com.alex.web.node.pdm.dto.user.UpdateUserDto;
+import com.alex.web.node.pdm.dto.user.UserDto;
 import com.alex.web.node.pdm.exception.EntityCreationException;
 import com.alex.web.node.pdm.exception.EntityNotFoundException;
 import com.alex.web.node.pdm.exception.UsernameAlreadyExistsException;

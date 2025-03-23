@@ -1,14 +1,13 @@
-package com.alex.web.node.pdm.controller.api.rest;
+package com.alex.web.node.pdm.api.rest;
 
-import com.alex.web.node.pdm.dto.NewUserDto;
-import com.alex.web.node.pdm.dto.UpdateUserDto;
-import com.alex.web.node.pdm.dto.UserDto;
+import com.alex.web.node.pdm.dto.user.NewUserDto;
+import com.alex.web.node.pdm.dto.user.UpdateUserDto;
+import com.alex.web.node.pdm.dto.user.UserDto;
 import com.alex.web.node.pdm.exception.EntityNotFoundException;
 import com.alex.web.node.pdm.model.Role;
 import com.alex.web.node.pdm.model.User;
 import com.alex.web.node.pdm.model.enums.Provider;
 import com.alex.web.node.pdm.model.enums.RoleName;
-import com.alex.web.node.pdm.api.rest.RestUserController;
 import com.alex.web.node.pdm.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

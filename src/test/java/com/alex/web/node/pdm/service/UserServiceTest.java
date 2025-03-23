@@ -2,10 +2,10 @@ package com.alex.web.node.pdm.service;
 
 
 
-import com.alex.web.node.pdm.config.CustomUserDetails;
-import com.alex.web.node.pdm.dto.NewUserDto;
-import com.alex.web.node.pdm.dto.UpdateUserDto;
-import com.alex.web.node.pdm.dto.UserDto;
+import com.alex.web.node.pdm.config.security.CustomUserDetails;
+import com.alex.web.node.pdm.dto.user.NewUserDto;
+import com.alex.web.node.pdm.dto.user.UpdateUserDto;
+import com.alex.web.node.pdm.dto.user.UserDto;
 import com.alex.web.node.pdm.exception.EntityCreationException;
 import com.alex.web.node.pdm.exception.EntityNotFoundException;
 import com.alex.web.node.pdm.exception.UsernameAlreadyExistsException;
@@ -16,13 +16,11 @@ import com.alex.web.node.pdm.model.enums.Provider;
 import com.alex.web.node.pdm.model.enums.RoleName;
 import com.alex.web.node.pdm.repository.UserRepository;
 import com.alex.web.node.pdm.service.impl.UserServiceImpl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

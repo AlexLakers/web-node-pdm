@@ -6,40 +6,42 @@
     <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
     <title></title>
     <script type="text/javascript" th:src="@{/js/actions.js}"></script>
+
 </head>
 <body>
 <div th:fragment="header">
     <!-- <img src="/image/img.png" alt="NotFoundLogo">-->
     <div sec:authorize="isAuthenticated()">
-        <span sec:authentication="name">User</span>
+        <span class="username" sec:authentication="name">User</span>
     </div>
-    <!--<span th:text="${#authentication.principal.username}">Username</span>-->
-    <!-- <form th:action="@{/logout}" method="post">
-         <button type="submit">Logout</button>
-     </form>-->
-    <!--  <div sec:authorize="isAuthenticated()">
-          <button type="button" onclick="doLogout()">Logout</button><br>
-      </div>
-      <div sec:authorize="!isAuthenticated()">
-          <button type="button" onclick="doLogin()">login</button><br>
-      </div>-->
+
     <div th:class="button-container-header" class="button-container-header">
+        <div sec:authorize="isAuthenticated()">
+            <a th:href="@{/users/{userId}(userId=${#authentication.principal.id})}"> <button type="button">Profile</button></a>
+        </div>
         <div sec:authorize="isAuthenticated()">
             <button type="button" onclick="doLogout()">Logout</button>
             <br>
         </div>
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{/users}"><button type="button">Admin</button></a>
+        </div>
+
         <div sec:authorize="!isAuthenticated()">
             <button type="button" onclick="doLogin()">login</button>
             <br>
         </div>
+
         <button type="button" onclick="doRegistration()">Registration</button>
         <div>
-            <a th:href="@{{previous}(previous=${referrer})}">
+            <a th:href="@{{previous}(previous=${referer})}">
                 <button type="button">Back</button>
             </a>
         </div>
     </div>
     <hr/>
 </div>
+<script>
+</script>
 </body>
 </html>

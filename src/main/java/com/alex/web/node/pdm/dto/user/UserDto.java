@@ -1,4 +1,4 @@
-package com.alex.web.node.pdm.dto;
+package com.alex.web.node.pdm.dto.user;
 
 
 import java.time.LocalDate;
