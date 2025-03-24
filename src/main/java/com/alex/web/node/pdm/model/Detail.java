@@ -1,14 +1,13 @@
 package com.alex.web.node.pdm.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "specification", callSuper = false)
+@ToString(exclude = "specification")
 @Entity
 @Builder
 @Table(name = "detail")
