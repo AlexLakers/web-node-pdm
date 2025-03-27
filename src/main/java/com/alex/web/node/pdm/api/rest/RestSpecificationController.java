@@ -1,9 +1,11 @@
 package com.alex.web.node.pdm.api.rest;
 
+import com.alex.web.node.pdm.dto.detail.DetailDto;
 import com.alex.web.node.pdm.dto.specification.NewSpecificationDto;
 import com.alex.web.node.pdm.dto.specification.SpecificationDto;
 import com.alex.web.node.pdm.dto.specification.UpdateSpecificationDto;
 import com.alex.web.node.pdm.search.SpecificationSearchDto;
+import com.alex.web.node.pdm.service.DetailService;
 import com.alex.web.node.pdm.service.SpecificationService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -28,15 +30,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RestSpecificationController {
     private final SpecificationService specificationService;
+    private final DetailService detailService;
 
     @GetMapping
-    public ResponseEntity<Page<SpecificationDto>> findAll(SpecificationSearchDto specificationSearchDto
-                                                      ) {
+    public ResponseEntity<Page<SpecificationDto>> findAll(/*@RequestParam(defaultValue = "0") Integer pageNumber,
+                                                          @RequestParam(defaultValue = "20") Integer pageSize,*/
+            SpecificationSearchDto specificationSearchDto/*SpecificationSearch specificationSearch,
+                                                          @PageableDefault(page = 0,size = 20)
+                                                          @SortDefault(sort = "id",direction = Sort.Direction.ASC) Pageable pageable*/) {
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE,MediaType.APPLICATION_JSON_VALUE)
                 .body(specificationService.findAll(specificationSearchDto));
     }
-
+    @GetMapping("/{specId}/details")
+    public ResponseEntity<List<DetailDto>> findAllDetailsBySpecId(@PathVariable Long specId){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(detailService.findAllBySpecId(specId));
+    }
     @GetMapping("/{id}")
     public ResponseEntity<SpecificationDto> findById(@PathVariable("id") Long id) {
         return ResponseEntity
@@ -48,10 +60,10 @@ public class RestSpecificationController {
         return ResponseEntity.status(HttpStatus.OK).body(specificationService.findByCode(code));
     }*/
 
-   /* @GetMapping
-    public ResponseEntity<List<SpecificationDto>> findByUserId(@RequestParam("userId") Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(specificationService.findAllByUserId(userId));
-    }*/
+    /* @GetMapping
+     public ResponseEntity<List<SpecificationDto>> findByUserId(@RequestParam("userId") Long userId) {
+         return ResponseEntity.status(HttpStatus.OK).body(specificationService.findAllByUserId(userId));
+     }*/
     @PostMapping
     public ResponseEntity<SpecificationDto> create(@RequestBody @Validated NewSpecificationDto newSpecificationDto){
         return ResponseEntity

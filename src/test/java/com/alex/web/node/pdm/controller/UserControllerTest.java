@@ -1,5 +1,6 @@
 package com.alex.web.node.pdm.controller;
 
+import com.alex.web.node.pdm.config.security.CustomUserDetails;
 import com.alex.web.node.pdm.dto.user.NewUserDto;
 import com.alex.web.node.pdm.dto.user.UpdateUserDto;
 import com.alex.web.node.pdm.dto.user.UserDto;
@@ -13,7 +14,9 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.TestConstructor;
@@ -47,6 +50,7 @@ class UserControllerTest {
             .username("Lakers@mail")
             .build();
 
+    private  final CustomUserDetails authUserWithId=new CustomUserDetails("admin","pass",List.of(new SimpleGrantedAuthority("ADMIN")),ID);
     private final List<String> roles = Collections.singletonList("ADMIN");
     private final UserDto userDto = new UserDto(ID, user.getUsername(), user.getFirstname(), user.getLastname(), DATE, roles, Provider.DAO_LOCAL.name());
 
@@ -70,7 +74,7 @@ class UserControllerTest {
                         .param(NewUserDto.Fields.birthday, givenNewUserDto.birthday().format(DateTimeFormatter.ISO_DATE))
                         .param(NewUserDto.Fields.password, givenNewUserDto.password()))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/registration"));
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/login"));
 
     }
     @Test
@@ -154,6 +158,7 @@ class UserControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/users")
+                        .with(SecurityMockMvcRequestPostProcessors.user(authUserWithId))
                         .accept(MediaType.TEXT_HTML)
                         .characterEncoding(StandardCharsets.UTF_8))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -183,6 +188,8 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/users/" + ID)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .with(SecurityMockMvcRequestPostProcessors.user(authUserWithId))
+                        .header("referer","")
                         .accept(MediaType.TEXT_HTML)
                         .characterEncoding(StandardCharsets.UTF_8))
                 .andExpect(MockMvcResultMatchers.status().isOk())

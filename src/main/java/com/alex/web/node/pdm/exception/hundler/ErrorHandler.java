@@ -72,13 +72,13 @@ public class ErrorHandler {
         model.addAttribute("error",new ErrorResponse(HttpStatus.FORBIDDEN.value(),ex.getMessage()));
         return "error/error";
     }
-    @ExceptionHandler(Exception.class)
+/*    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleException(Exception ex, Model model){
         log.error(ex.getMessage());
         model.addAttribute("error",new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()));
         return "error/error";
-    }
+    }*/
 
 
 }

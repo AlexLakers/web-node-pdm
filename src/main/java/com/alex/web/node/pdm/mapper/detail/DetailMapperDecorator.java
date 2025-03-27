@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Component
 public abstract class DetailMapperDecorator implements DetailMapper {
-    @Qualifier("detailMapper")
     @Autowired
     private DetailMapper delegate;
     @Autowired

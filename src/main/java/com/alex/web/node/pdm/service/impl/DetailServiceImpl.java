@@ -41,6 +41,10 @@ public class DetailServiceImpl implements DetailService {
         return detailRepository.findDetailsBy(pageable);
     }
 
+    @Override
+    public List<DetailDto> findAllByIds(DetailSearchDto searchDto) {
+        return detailRepository.findDetailsByIds(searchDto.ids());
+    }
 
     @Override
     @Transactional
@@ -51,6 +55,8 @@ public class DetailServiceImpl implements DetailService {
         return specificationRepository.findById(newDetailDto.specificationId())
                 .map(spec -> {
                     DetailDto savedDetailDto = detailRepository.saveDetail(newDetailDto);
+                    Integer newAmountSpec = recalculateAmount(spec);
+                    spec.setAmount(newAmountSpec);
                     specificationRepository.flush();
                     return savedDetailDto;
                 }).orElseThrow(() -> new EntityCreationException("The detail with name '%1$s' creation error"
@@ -59,6 +65,15 @@ public class DetailServiceImpl implements DetailService {
 
     }
 
+    private Integer recalculateAmount(Specification spec) {
+        List<Long> detailIds = spec.getDetails().stream()
+                .map(Detail::getId)
+                .collect(Collectors.toList());
+        return detailRepository.findDetailsByIds(detailIds).stream()
+                .map(DetailDto::amount)
+                .reduce(0, Integer::sum);
+
+    }
 
     @Override
     @Transactional
@@ -73,13 +88,23 @@ public class DetailServiceImpl implements DetailService {
                 .flatMap(detail -> specificationRepository.findById(detailDto.specificationId()))
                 .map(spec -> {
                     DetailDto updatedDetailDto = detailRepository.updateDetail(id, dto);
+                    Integer newAmountSpec = recalculateAmount(spec);
+                    spec.setAmount(newAmountSpec);
                     specificationRepository.flush();
                     return updatedDetailDto;
                 })
+                .orElseThrow(() -> new EntityNotFoundException("The spec with id '%1$d' is not found".formatted(detailDto.id())));
+    }
+
+    private DetailDto tryFindDetailById(Long id) {
+        return detailRepository.findDetailById(id)
                 .orElseThrow(() -> new EntityNotFoundException("The detail with id '%1$d' is not found".formatted(id)));
     }
 
-
+    private void checkIfTheNameIsAvailable(String name) {
+        if (detailRepository.existsDetailByName(name))
+            throw new NameAlreadyExistsException("The detail with name '%1$s' already exists".formatted(name));
+    }
 
     @Override
     @Transactional
@@ -89,6 +114,9 @@ public class DetailServiceImpl implements DetailService {
                 .orElseThrow(() -> new EntityNotFoundException("The detail with id '%1$d' is not found".formatted(id)));
     }
 
-
+    @Override
+    public List<DetailDto> findAllBySpecId(Long specId) {
+        return detailRepository.findDetailsBySpecificationId(specId);
+    }
 
 }
