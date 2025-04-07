@@ -221,6 +221,7 @@ class SpecificationControllerTest {
 
         mockMvc.perform(get("/specifications/{specId}/details", ID)
                         .with(csrf())
+                        .with(user(authUserWithId))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.TEXT_HTML)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)

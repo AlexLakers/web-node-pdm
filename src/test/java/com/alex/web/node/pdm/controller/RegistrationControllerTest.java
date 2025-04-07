@@ -27,17 +27,17 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 class RegistrationControllerTest {
 
     private final MockMvc mockMvc;
-
+    private  final CustomUserDetails authUserWithId=new CustomUserDetails("admin","pass",List.of(new SimpleGrantedAuthority("ADMIN")),1L);
 
     @Test
     @SneakyThrows
     void registration_thenStatusOk(){
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/registration"))
-                       // .with(csrf())
-                      //  .with(user(authUserWithId))
-                       // .characterEncoding(StandardCharsets.UTF_8)
-                        //.accept(MediaType.TEXT_HTML))
+                        .get("/registration")
+                        .with(csrf())
+                        .with(user(authUserWithId))
+                        .characterEncoding(StandardCharsets.UTF_8)
+                        .accept(MediaType.TEXT_HTML))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                // .andExpect(MockMvcResultMatchers.model().attributeExists("user"))
                 .andExpect(MockMvcResultMatchers.view().name("user/registration"));
