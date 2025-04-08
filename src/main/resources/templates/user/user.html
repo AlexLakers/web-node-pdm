@@ -24,8 +24,6 @@
         <div th:if="${errors}">
             <span class="error" th:each="error : ${errors}" th:text="${error.defaultMessage}">Invalid Credentials</span>
         </div>
-        <!--  th:action="@{/users/{userId}/update(userId=${user.id})}"-->
-        <!--    <form th:action="@{/masters/edit/{id}(id=${master.id})}" method="post" th:object="${master}">-->
         <form th:action="@{/users/{userId}/update(userId=${user.id})}" id="updatingForm" method="post" th:object="${user}">
             <label for="firstname">Firstname:
                 <input class="input-edit" type="text" name="firstname" id="firstname" th:value="*{firstname}" placeholder="firstname">

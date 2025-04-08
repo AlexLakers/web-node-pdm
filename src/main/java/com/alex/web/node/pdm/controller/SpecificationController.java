@@ -6,6 +6,8 @@ import com.alex.web.node.pdm.search.SpecificationSearchDto;
 import com.alex.web.node.pdm.service.DetailService;
 import com.alex.web.node.pdm.service.SpecificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -64,7 +66,6 @@ public class SpecificationController {
 
 
     @PostMapping
-    /*@PreAuthorize("#authUser.id==#newSpecificationDto.userId()")*/
     public String create(Model model,
                          @Validated NewSpecificationDto newSpecificationDto,
                          BindingResult bindingResult,
