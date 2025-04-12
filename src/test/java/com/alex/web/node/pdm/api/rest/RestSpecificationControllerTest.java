@@ -42,8 +42,8 @@ class RestSpecificationControllerTest {
     private final MockMvc mockMvc;
     @MockitoBean
     private SpecificationService specificationService;
-    @MockitoBean
-    private final DetailService detailService;
+    //@MockitoBean
+    //private final DetailService detailService;
     private final ObjectMapper objectMapper;
 
 
