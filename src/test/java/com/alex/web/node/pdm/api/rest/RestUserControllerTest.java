@@ -8,6 +8,7 @@ import com.alex.web.node.pdm.model.Role;
 import com.alex.web.node.pdm.model.User;
 import com.alex.web.node.pdm.model.enums.Provider;
 import com.alex.web.node.pdm.model.enums.RoleName;
+import com.alex.web.node.pdm.service.SpecificationService;
 import com.alex.web.node.pdm.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,8 @@ class RestUserControllerTest {
 
     @MockitoBean
     private final UserService userService;
+    @MockitoBean
+    private final SpecificationService specificationService;
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;

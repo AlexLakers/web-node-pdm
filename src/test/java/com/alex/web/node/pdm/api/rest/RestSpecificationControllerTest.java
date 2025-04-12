@@ -6,6 +6,7 @@ import com.alex.web.node.pdm.dto.specification.UpdateSpecificationDto;
 import com.alex.web.node.pdm.exception.EntityNotFoundException;
 import com.alex.web.node.pdm.model.Specification;
 import com.alex.web.node.pdm.search.SpecificationSearchDto;
+import com.alex.web.node.pdm.service.DetailService;
 import com.alex.web.node.pdm.service.SpecificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

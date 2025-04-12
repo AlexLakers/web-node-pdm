@@ -22,9 +22,12 @@ public class SecurityConfig {
     @Bean
     @Order(20)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth
+        http
+                .csrf(AbstractHttpConfigurer::disable) //logout used GET method then I need to disable csrf
+                .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/login", "/registration").permitAll()
+                        .requestMatchers( "/login/**","/logout/**", "/registration/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/error/**").permitAll()
                         .requestMatchers("http://localhost:8085/login/oauth2/code/google").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users").hasAuthority(RoleName.ADMIN.name())
@@ -32,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users/delete").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/users/{id}/update").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
                         .requestMatchers("/specifications/**").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
+                        .requestMatchers("/details/**").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
                 .anyRequest().denyAll())
                 .formLogin(login -> login
                         .loginPage("/login")
@@ -61,11 +65,13 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .securityMatcher("/api/v1/**", "/v3/api-docs/**", "/swagger-ui/**")
-                /*.requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()*/
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                        .requestMatchers("users/{id}/specifications/**").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
-                        .requestMatchers("api/v1/users/**").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
+                        .requestMatchers("api/v1/users/{id}/specifications").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
+                        .requestMatchers("/api/v1/users/**").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
+                        .requestMatchers("/api/v1/specifications/{id}/details").hasAnyAuthority(RoleName.USER.name(), RoleName.ADMIN.name())
+                        .requestMatchers("/api/v1/specifications/**").hasAnyAuthority(RoleName.USER.name(),RoleName.ADMIN.name())
+                        .requestMatchers("/api/v1/details/**").hasAnyAuthority(RoleName.USER.name(),RoleName.ADMIN.name())
                         .requestMatchers("/api/v1/**").authenticated().anyRequest().denyAll())
                 .httpBasic(Customizer.withDefaults());
         return http.build();

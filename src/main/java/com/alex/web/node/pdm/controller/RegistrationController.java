@@ -16,7 +16,7 @@ public class RegistrationController {
     @GetMapping("/registration")
     public String registration(@ModelAttribute("user") NewUserDto user,
                                Model model,
-                               @RequestHeader(required = false) String referer) {
+                               @RequestHeader(required = false,defaultValue = "") String referer) {
         model.addAllAttributes(Map.of("user", user, "referer", referer));
         return "user/registration";
     }

@@ -3,8 +3,11 @@ package com.alex.web.node.pdm.controller;
 import com.alex.web.node.pdm.dto.specification.NewSpecificationDto;
 import com.alex.web.node.pdm.dto.specification.UpdateSpecificationDto;
 import com.alex.web.node.pdm.search.SpecificationSearchDto;
+import com.alex.web.node.pdm.service.DetailService;
 import com.alex.web.node.pdm.service.SpecificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +23,7 @@ import java.util.Map;
 public class SpecificationController {
 
     private final SpecificationService specificationService;
-    //private final DetailService detailService;
+    private final DetailService detailService;
 
     @GetMapping("/{id}")
     public String findById(@PathVariable Long id,
@@ -54,9 +57,8 @@ public class SpecificationController {
     public String findAllDetailsBySpecId(Model model,
                                          @RequestHeader(required = false, defaultValue = "/specifications") String referer,
                                          @PathVariable Long specId) {
-        System.out.println(referer);
         model.addAllAttributes(Map.of(
-               // "details", detailService.findAllBySpecId(specId),
+                "details", detailService.findAllBySpecId(specId),
                 "specId", specId,
                 "referer", referer));
         return "detail/details";
@@ -64,7 +66,6 @@ public class SpecificationController {
 
 
     @PostMapping
-    /*@PreAuthorize("#authUser.id==#newSpecificationDto.userId()")*/
     public String create(Model model,
                          @Validated NewSpecificationDto newSpecificationDto,
                          BindingResult bindingResult,

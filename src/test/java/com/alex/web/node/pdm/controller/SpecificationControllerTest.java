@@ -1,6 +1,7 @@
 package com.alex.web.node.pdm.controller;
 
 import com.alex.web.node.pdm.config.security.CustomUserDetails;
+import com.alex.web.node.pdm.dto.detail.DetailDto;
 import com.alex.web.node.pdm.dto.specification.NewSpecificationDto;
 import com.alex.web.node.pdm.dto.specification.SpecificationDto;
 import com.alex.web.node.pdm.dto.specification.UpdateSpecificationDto;
@@ -9,6 +10,7 @@ import com.alex.web.node.pdm.model.Detail;
 import com.alex.web.node.pdm.model.Specification;
 import com.alex.web.node.pdm.model.User;
 import com.alex.web.node.pdm.search.SpecificationSearchDto;
+import com.alex.web.node.pdm.service.DetailService;
 import com.alex.web.node.pdm.service.SpecificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -219,6 +221,7 @@ class SpecificationControllerTest {
 
         mockMvc.perform(get("/specifications/{specId}/details", ID)
                         .with(csrf())
+                        .with(user(authUserWithId))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .accept(MediaType.TEXT_HTML)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)

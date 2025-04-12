@@ -31,7 +31,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
-/*@PreAuthorize("#hasAnyAuthority('ADMIN','USER')")*/
 public class SpecificationServiceImpl implements SpecificationService {
     private static final Integer DEFAULT_PAGE_NUMBER = 0;
     private static final Integer DEFAULT_PAGE_SIZE = 1;
