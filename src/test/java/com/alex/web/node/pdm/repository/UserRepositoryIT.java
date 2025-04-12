@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @RequiredArgsConstructor
 @Transactional
-class UserRepositoryTest {
+class UserRepositoryIT {
     private final static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:17");
     private static final Long INVALID_USER_ID = 1000L;
     private static final Long VALID_USER_ID = 1L;
