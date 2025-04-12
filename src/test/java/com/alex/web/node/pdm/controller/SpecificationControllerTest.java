@@ -49,8 +49,8 @@ class SpecificationControllerTest {
 
     @MockitoBean
     private final SpecificationService specificationService;
-   // @MockitoBean
-   // private final DetailService detailService;
+   @MockitoBean
+    private final DetailService detailService;
     private final MockMvc mockMvc;
     private static final Long ID = 1L;
     private static final Long INVALID_ID = Long.MAX_VALUE;
@@ -215,7 +215,7 @@ class SpecificationControllerTest {
 
     }
 
-  /*  @Test
+    @Test
     @SneakyThrows
     void givenId_whenFoundDetails_thenSetModelAndView() {
         List<DetailDto> expected = List.of(new DetailDto(ID,"name",100,ID));
@@ -231,7 +231,7 @@ class SpecificationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("details"))
                 .andExpect(view().name("detail/details"));
-    }*/
+    }
 
 
 }

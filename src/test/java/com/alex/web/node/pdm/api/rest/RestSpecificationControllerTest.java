@@ -41,9 +41,9 @@ class RestSpecificationControllerTest {
     private final Specification specification = Specification.builder().id(ID).desc("testDesc").code("testCode").build();
     private final MockMvc mockMvc;
     @MockitoBean
-    private SpecificationService specificationService;
-    //@MockitoBean
-    //private final DetailService detailService;
+    private final SpecificationService specificationService;
+   @MockitoBean
+    private final DetailService detailService;
     private final ObjectMapper objectMapper;
 
 
