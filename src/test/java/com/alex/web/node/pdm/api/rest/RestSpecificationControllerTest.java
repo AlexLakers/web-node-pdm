@@ -8,7 +8,6 @@ import com.alex.web.node.pdm.model.Specification;
 import com.alex.web.node.pdm.search.SpecificationSearchDto;
 import com.alex.web.node.pdm.service.DetailService;
 import com.alex.web.node.pdm.service.SpecificationService;
-import com.alex.web.node.pdm.service.impl.DetailServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -43,8 +42,8 @@ class RestSpecificationControllerTest {
     private final MockMvc mockMvc;
     @MockitoBean
     private final SpecificationService specificationService;
-   @MockitoBean
-    private final DetailServiceImpl detailService;
+    @MockitoBean
+    private final DetailService detailService;
     private final ObjectMapper objectMapper;
 
 
@@ -109,52 +108,55 @@ class RestSpecificationControllerTest {
     @SneakyThrows
     public void findAll_thenReturnStatusOkAnd() {
         SpecificationSearchDto searchDto = new SpecificationSearchDto(ID, "testCode", 0, 2, "ASC", "code");
-        Page<SpecificationDto> expected=new PageImpl<>(Collections.singletonList(specificationDto));
+        Page<SpecificationDto> expected = new PageImpl<>(Collections.singletonList(specificationDto));
         Mockito.when(specificationService.findAll(searchDto)).thenReturn(expected);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/specifications")
                         .param("userId", "1")
-                        .param("code","testCode")
-                        .param("pageNumber","0")
-                        .param("pageSize","20")
-                        .param("sortDirection","ASC")
-                        .param("sortColumn","id")
+                        .param("code", "testCode")
+                        .param("pageNumber", "0")
+                        .param("pageSize", "20")
+                        .param("sortDirection", "ASC")
+                        .param("sortColumn", "id")
                         .characterEncoding(StandardCharsets.UTF_8)
 
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
+
     @Test
     @SneakyThrows
-    void givenId_whenDelete_thenReturnStatusNotContent(){
+    void givenId_whenDelete_thenReturnStatusNotContent() {
         Mockito.doNothing().when(specificationService).delete(ID);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/specifications/{id}",ID)
+                        .delete("/api/v1/specifications/{id}", ID)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .characterEncoding(StandardCharsets.UTF_8)
                 )
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
+
     @Test
     @SneakyThrows
     public void givenNotFoundId_whenUserNotFoundDuringDelete_thenReturnStatusNotFound() {
         Mockito.doThrow(new EntityNotFoundException("The spec with id '%1$d' is not found".formatted(ID))).when(specificationService).delete(Mockito.anyLong());
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/api/v1/specifications/{id}",ID)
+                        .delete("/api/v1/specifications/{id}", ID)
                         .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+
     @Test
     @SneakyThrows
     void givenId_whenUserFound_thenReturnStatusOkAndNotEmptyBody() {
         Mockito.when(specificationService.findById(ID)).thenReturn(specificationDto);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/specifications/{id}",ID)
+                        .get("/api/v1/specifications/{id}", ID)
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .accept(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8))
