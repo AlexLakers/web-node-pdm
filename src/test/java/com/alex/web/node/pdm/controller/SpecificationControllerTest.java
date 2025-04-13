@@ -12,6 +12,7 @@ import com.alex.web.node.pdm.model.User;
 import com.alex.web.node.pdm.search.SpecificationSearchDto;
 import com.alex.web.node.pdm.service.DetailService;
 import com.alex.web.node.pdm.service.SpecificationService;
+import com.alex.web.node.pdm.service.impl.DetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ class SpecificationControllerTest {
     @MockitoBean
     private final SpecificationService specificationService;
    @MockitoBean
-    private final DetailService detailService;
+    private final DetailServiceImpl detailService;
     private final MockMvc mockMvc;
     private static final Long ID = 1L;
     private static final Long INVALID_ID = Long.MAX_VALUE;

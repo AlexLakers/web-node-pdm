@@ -8,6 +8,7 @@ import com.alex.web.node.pdm.model.Specification;
 import com.alex.web.node.pdm.search.SpecificationSearchDto;
 import com.alex.web.node.pdm.service.DetailService;
 import com.alex.web.node.pdm.service.SpecificationService;
+import com.alex.web.node.pdm.service.impl.DetailServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -43,7 +44,7 @@ class RestSpecificationControllerTest {
     @MockitoBean
     private final SpecificationService specificationService;
    @MockitoBean
-    private final DetailService detailService;
+    private final DetailServiceImpl detailService;
     private final ObjectMapper objectMapper;
 
 
