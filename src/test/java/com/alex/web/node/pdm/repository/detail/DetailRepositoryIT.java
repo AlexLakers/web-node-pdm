@@ -118,7 +118,7 @@ class DetailRepositoryIT {
 
     @Test
     void givenPageable_whenFound_thenReturnPage() {
-        Sort sort = Sort.by(Fields.id).and(Sort.by(Fields.amount));
+        Sort sort = Sort.by(Fields.amount);
         Pageable pageable = PageRequest.of(0, 1, sort);
 
         Page<DetailDto> actual = detailRepository.findDetailsBy(pageable);

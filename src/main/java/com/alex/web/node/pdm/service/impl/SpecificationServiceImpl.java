@@ -14,6 +14,7 @@ import com.alex.web.node.pdm.repository.SpecificationRepository;
 import com.alex.web.node.pdm.search.PredicateBuilder;
 import com.alex.web.node.pdm.search.SortBuilder;
 import com.alex.web.node.pdm.search.SpecificationSearchDto;
+import com.alex.web.node.pdm.service.LogMessageService;
 import com.alex.web.node.pdm.service.SpecificationService;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
+/*@PreAuthorize("#hasAnyAuthority('ADMIN','USER')")*/
 public class SpecificationServiceImpl implements SpecificationService {
     private static final Integer DEFAULT_PAGE_NUMBER = 0;
     private static final Integer DEFAULT_PAGE_SIZE = 1;
     private final SpecificationRepository specificationRepository;
     private final SpecificationMapper specificationMapper;
+    private final LogMessageService logMessageService;
 
 
     public Page<SpecificationDto> findAll(SpecificationSearchDto searchDto) {
@@ -47,8 +50,9 @@ public class SpecificationServiceImpl implements SpecificationService {
                 .add(searchDto.userId(), QSpecification.specification.user.id::eq)
                 .and();
         Pageable pageable = buildPageable(searchDto, sort);
-        return specificationRepository.findAll(predicate, pageable)
+        Page<SpecificationDto> page = specificationRepository.findAll(predicate, pageable)
                 .map(specificationMapper::toSpecificationDto);
+        return page;
     }
 
   /*  public Page<SpecificationDto> findAll(SpecificationSearch search, Pageable pageable) {
@@ -70,36 +74,58 @@ public class SpecificationServiceImpl implements SpecificationService {
                 : PageRequest.of(searchDto.pageNumber(), searchDto.pageSize(), sort);*/
     }
 
+
     @Override
     public SpecificationDto findByCode(String code) {
-        return specificationRepository.findByCode(code)
+        SpecificationDto dto = specificationRepository.findByCode(code)
                 .map(specificationMapper::toSpecificationDto)
                 .orElseThrow(() -> new EntityNotFoundException("The spec with code '%1$s' is not found".formatted(code)));
+        return dto;
     }
+
 
     @Override
     public SpecificationDto findById(Long id) {
-        return specificationRepository.findById(id)
+        SpecificationDto dto = specificationRepository.findById(id)
                 .map(specificationMapper::toSpecificationDto)
-                .orElseThrow(() -> new EntityNotFoundException("The spec with id '%1$s' is not found".formatted(id)));
+                .orElseThrow(() -> logAndThrowEntityNotFound(id)); /*new EntityNotFoundException("The spec with id '%1$s' is not found".formatted(id))*/
+        return dto;
     }
+
 
     @Override
     public List<SpecificationDto> findAllByUserId(Long userId) {
-        return specificationMapper.toSpecificationDtoList(specificationRepository.findAllByUserId(userId));
+        List<SpecificationDto> dtoList = specificationMapper.toSpecificationDtoList(specificationRepository.findAllByUserId(userId));
+        return dtoList;
     }
 
 
     @Override
     @Transactional
     public SpecificationDto create(NewSpecificationDto newSpecificationDto) {
-        if (specificationRepository.existsByCode(newSpecificationDto.code()))
-            throw new CodeAlreadyExistsException("The code %1$s is already exists".formatted(newSpecificationDto.code()));
-        return Optional.of(newSpecificationDto)
+        logAndThrowIfCodeIsExists(newSpecificationDto.code());
+        SpecificationDto dto= Optional.of(newSpecificationDto)
                 .map(specificationMapper::toSpecification)
                 .map(specificationRepository::save)
                 .map(specificationMapper::toSpecificationDto)
                 .orElseThrow(() -> new EntityCreationException("Spec '%1$s' creation error".formatted(newSpecificationDto.code())));
+
+        return dto;
+    }
+
+
+    private void logAndThrowIfCodeIsExists(String code) {
+        if (specificationRepository.existsByCode(code)) {
+            String errorMessage = "The code %1$s is already exists".formatted(code);
+            logMessageService.save(errorMessage);
+            throw new CodeAlreadyExistsException(errorMessage);
+        }
+    }
+
+    private EntityNotFoundException logAndThrowEntityNotFound(Long id) {
+        String errorMessage = "The spec with id '%1$s' is not found".formatted(id);
+        logMessageService.save(errorMessage);
+        return new EntityNotFoundException(errorMessage);
     }
 
 
@@ -109,23 +135,22 @@ public class SpecificationServiceImpl implements SpecificationService {
         Specification specification = specificationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("The spec with id '%1$s' is not found".formatted(id)));
 
-        if (!specification.getCode().equals(dto.code()) && specificationRepository.existsByCode(dto.code()))
-            throw new CodeAlreadyExistsException("The code %1$s is already exists".formatted(dto.code()));
-
-        return Optional.of(specification)
+        if (!specification.getCode().equals(dto.code())) {
+            logAndThrowIfCodeIsExists(dto.code());
+        }
+        SpecificationDto updatedDto=Optional.of(specification)
                 .map(spec -> {
                     specificationMapper.updateSpecification(dto, spec);
                     return specificationRepository.saveAndFlush(spec);
                 })
                 .map(specificationMapper::toSpecificationDto)
-                .orElseThrow(() -> new EntityNotFoundException("The spec with id '%1$s' is not found".formatted(id)));
+                .orElseThrow(() -> logAndThrowEntityNotFound(id));
+        return updatedDto;
 
     }
 
-
     @Override
     @Transactional
-
     public void delete(Long id) {
         specificationRepository.findById(id)
                 .ifPresentOrElse(spec -> {
@@ -133,7 +158,7 @@ public class SpecificationServiceImpl implements SpecificationService {
                             specificationRepository.flush();
                         },
                         () -> {
-                            throw new EntityNotFoundException("The spec with id '%1$s' is not found".formatted(id));
+                            throw logAndThrowEntityNotFound(id);
                         });
     }
 }

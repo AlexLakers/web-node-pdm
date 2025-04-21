@@ -76,16 +76,13 @@ public class DetailJdbcRepositoryImpl implements DetailJdbcRepository {
     }
 
     public Page<DetailDto> findDetailsBy(Pageable pageable) {
-        String sqlCount = """
-                       SELECT COUNT(id) FROM detail
-                """;
-        String sqlPage = """
-                SELECT id,name,amount,specification_id FROM detail
-                                       ORDER BY ? LIMIT ? OFFSET ?
-                """;
         String orderColumns = pageable.getSort()
                 .stream().map(Sort.Order::getProperty)
                 .collect(Collectors.joining(", "));
+        String sqlCount = """
+                       SELECT COUNT(id) FROM detail
+                """;
+        String sqlPage = "SELECT id,name,amount,specification_id FROM detail ORDER BY "+ orderColumns + " LIMIT ? OFFSET ?";
 
         int countRows = jdbcTemplate.queryForObject(sqlCount, Integer.class);
 
@@ -95,8 +92,7 @@ public class DetailJdbcRepositoryImpl implements DetailJdbcRepository {
                         rs.getString(Fields.name),
                         rs.getInt(Fields.amount),
                         rs.getLong("specification_id")
-                ),
-                orderColumns, pageable.getPageSize(), pageable.getOffset()
+                ),/*orderColumns,*/ pageable.getPageSize(), pageable.getOffset()
 
         );
         return new PageImpl<>(content, pageable, countRows);

@@ -43,6 +43,8 @@ class SpecificationServiceTest {
     private SpecificationRepository specificationRepository;
     @Mock
     private SpecificationMapper specificationMapper;
+    @Mock
+    private LogMessageService logMessageService;
     @InjectMocks
     private SpecificationServiceImpl specificationService;
 
@@ -76,7 +78,7 @@ class SpecificationServiceTest {
     @Test
     void givenId_whenNotFoundEntity_thenThrowEntityNotFoundException() {
         Mockito.when(specificationRepository.findById(ID)).thenReturn(Optional.empty());
-
+        Mockito.doNothing().when(logMessageService).save(Mockito.anyString());
         Mockito.verifyNoInteractions(specificationMapper);
         Assertions.assertThatExceptionOfType(EntityNotFoundException.class)
                 .isThrownBy(() -> specificationService.findById(ID))
