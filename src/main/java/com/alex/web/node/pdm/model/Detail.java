@@ -2,6 +2,8 @@ package com.alex.web.node.pdm.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 @Data
 @AllArgsConstructor
@@ -11,6 +13,7 @@ import lombok.*;
 @Entity
 @Builder
 @Table(name = "detail")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Detail {
 
     @Id

@@ -3,6 +3,9 @@ package com.alex.web.node.pdm.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "specification")
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @DynamicUpdate
 public class Specification {
     @Id
@@ -36,6 +40,7 @@ public class Specification {
 
     @OneToMany(mappedBy = "specification")
     @Builder.Default
+    @NotAudited
     private List<Detail> details = new ArrayList<>();
 
 }
