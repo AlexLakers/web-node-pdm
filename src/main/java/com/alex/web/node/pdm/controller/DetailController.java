@@ -4,6 +4,8 @@ import com.alex.web.node.pdm.dto.detail.NewDetailDto;
 import com.alex.web.node.pdm.dto.detail.UpdateDetailDto;
 import com.alex.web.node.pdm.service.DetailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
 
+@Slf4j
 @RequestMapping("/details")
 @RequiredArgsConstructor
 @Controller
@@ -33,6 +36,7 @@ public class DetailController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes
     ) {
+        log.info("--start 'create a new detail' endpoint--");
         if (bindingResult.hasErrors())
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 
@@ -45,6 +49,7 @@ public class DetailController {
     @PostMapping("/{specId}/delete")
     public String delete(@RequestParam("detailId") Long id,
                          @PathVariable Long specId) {
+        log.info("--start 'delete user by id' endpoint--");
         detailService.delete(id);
         return "redirect:/specifications/{specId}/details";
     }
@@ -55,7 +60,7 @@ public class DetailController {
                          @Validated UpdateDetailDto updateDetailDto,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
-
+        log.info("--start 'update detail by id' endpoint--");
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/details/{id}";

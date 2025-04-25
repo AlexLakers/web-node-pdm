@@ -28,19 +28,23 @@ public class RestDetailController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DetailDto> findById(@PathVariable Long id) {
+        log.info("--start 'find detail by id' rest endpoint--");
         return ResponseEntity.status(HttpStatus.OK).body(detailService.findById(id));
     }
+
 
     @GetMapping
     public ResponseEntity<Page<DetailDto>> findAllByPageable(@PageableDefault(page = 0, size = 20)
                                                              @SortDefault(sort = "id", direction = Sort.Direction.ASC)
                                                              Pageable pageable) {
+        log.info("--start 'find all detail by pageable' rest endpoint--");
         return ResponseEntity.ok().body(detailService.findAllByPageable(pageable));
     }
 
 
     @PostMapping
     public ResponseEntity<DetailDto> create(@Validated @RequestBody NewDetailDto newDetailDto) {
+        log.info("--start 'create a new detail' rest endpoint--");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -52,6 +56,7 @@ public class RestDetailController {
     @PutMapping("/{id}")
     public ResponseEntity<DetailDto> update(@PathVariable Long id,
                                             @Validated @RequestBody UpdateDetailDto updateDetailDto) {
+        log.info("--start 'update detail by id' rest endpoint--");
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(detailService.update(id, updateDetailDto));
@@ -59,6 +64,7 @@ public class RestDetailController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
+        log.info("--start 'delete user by id' rest endpoint--");
         detailService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

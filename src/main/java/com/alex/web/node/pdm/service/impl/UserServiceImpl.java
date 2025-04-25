@@ -16,6 +16,7 @@ import com.alex.web.node.pdm.model.enums.RoleName;
 import com.alex.web.node.pdm.repository.UserRepository;
 import com.alex.web.node.pdm.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -39,55 +41,68 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return getCustomUserDetails(username)
+        log.debug("The method 'loadUserByUsername' with arg:{}", username);
+        UserDetails userDetails = getCustomUserDetails(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
+        log.debug("The UserDetails User: {} has been loaded", userDetails);
+        return userDetails;
 
     }
 
     private Optional<CustomUserDetails> getCustomUserDetails(String username) {
+        log.debug("The method 'getCustomUserDetails' arg:{}", username);
         return userRepository.findByUsername(username)
                 .map(userMapper::toCustomUserDetails);
     }
 
     public Optional<String> getCurrentName() {
-        var s=SecurityContextHolder.getContext().getAuthentication();
+        log.debug("The method 'getCurrentName'");
+        var s = SecurityContextHolder.getContext().getAuthentication();
         return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(Authentication::getPrincipal)
                 .map(user -> ((UserDetails) user).getUsername());
     }
 
     public UserDto findById(Long id) {
-        return userRepository.findUserById(id)
+        log.debug("The method 'findById' with arg:{}", id);
+        UserDto foundUserDto = userRepository.findUserById(id)
                 .map(userMapper::toUserDto)
                 .orElseThrow(() -> new EntityNotFoundException("The user '%1$s' is not found".formatted(id)));
+        log.info("The user with id :{} has been found", id);
+        return foundUserDto;
     }
 
     // @PreAuthorize("hasAuthority('ADMIN')")
     public List<UserDto> findAll() {
-        return userMapper.toUserDtoList(userRepository.findAll());
-        /*userRepository.findAll().stream()
-        .map(userMapper::toUserDto)
-                .collect(Collectors.toList());
-*/
+        log.debug("The method 'findAll' without args");
+        List<UserDto> dtoList = userMapper.toUserDtoList(userRepository.findAll());
+        log.info("List of users has been generated:{}", dtoList);
+        return dtoList;
     }
 
     @Transactional
     public UserDto update(Long id, UpdateUserDto updateUserDto) {
-        return userRepository.findUserById(id)
+        log.debug("The method 'update' with arg:{}", updateUserDto);
+        UserDto updatedUserDto = userRepository.findUserById(id)
                 .map(user -> {
                     userMapper.updateUser(user, updateUserDto);
                     return userRepository.saveAndFlush(user);
                 })
                 .map(userMapper::toUserDto)
                 .orElseThrow(() -> new EntityNotFoundException("The user '%1$s' is not found".formatted(id)));
+        log.info("The user with id :{} has been updated", id);
+        return updatedUserDto;
 
     }
 
     @Transactional
     public UserDto create(NewUserDto newUserDto) {
+        log.debug("The method 'create' with arg:{}", newUserDto);
         if (userRepository.existsUserByUsername(newUserDto.username()))
             throw new UsernameAlreadyExistsException("The username %1$s is already exists".formatted(newUserDto.username()));
-        return save(newUserDto);
+        UserDto savedUserDto = save(newUserDto);
+        log.info("A new user with id:{} has been created", savedUserDto.id());
+        return savedUserDto;
 
 
     }
@@ -103,6 +118,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void delete(Long id) {
+        log.debug("The method 'delete' with arg:{}", id);
         userRepository.findUserById(id)
                 .ifPresentOrElse(user -> {
                     userRepository.delete(user);
@@ -110,34 +126,23 @@ public class UserServiceImpl implements UserService {
                 }, () -> {
                     throw new EntityNotFoundException("The user '%1$s' is not found".formatted(id));
                 });
-                /*.map(user -> {
-                            userRepository.delete(user);
-                            userRepository.flush();
-                            return true;
-                        }
-                ).orElse(false);*/
+        log.info("The user with id:{} has been deleted", id);
     }
 
     @Override
     @Transactional
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
+        log.debug("The method 'loadUser' with arg:{}", userRequest);
         String email = userRequest.getIdToken().getClaim("email");
         String name = userRequest.getIdToken().getClaim("name");
-        return getCustomUserDetails(email)
+        CustomOidcUser oidcUser = getCustomUserDetails(email)
                 .map(userDetails -> new CustomOidcUser(new DefaultOidcUser(userDetails.getAuthorities(), userRequest.getIdToken()), userDetails.getId()))
-                /* new DefaultOidcUser(user.getAuthorities(), userRequest.getIdToken()))*/
                 .orElseGet(() -> {
                     User savedUser = saveOidcUserWithDefaultRole(email, name);
-                    /*return new DefaultOidcUser(savedUser.getRoles(), userRequest.getIdToken());*/
                     return new CustomOidcUser(new DefaultOidcUser(savedUser.getRoles(), userRequest.getIdToken()), savedUser.getId());
                 });
-
-
-        /*user -> new CustomUserSecurity(user.getUsername(), user.getPassword(), user.getRoles(), user.getId()),*/
-      /*  userRepository.save(User.builder().username(email).roles(Collections.singletonList(Role.builder().roleName(RoleName.USER).build())).build());
-
-
-        return new DefaultOidcUser(userRequest.getIdToken(), );*/
+        log.debug("The Oidc user :{} has been loaded and generated", oidcUser);
+        return oidcUser;
     }
 
 
@@ -149,10 +154,6 @@ public class UserServiceImpl implements UserService {
         return Optional.ofNullable(userRepository.save(user))
                 .orElseThrow(() -> new EntityCreationException("User '%1$s' creation error".formatted(email)));
     }
-
-
-       /* user==null ? new UserCreationException("User '%1$s' creation error".formatted(email))
-                :user;*/
 
 }
 

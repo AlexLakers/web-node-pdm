@@ -6,6 +6,7 @@ import com.alex.web.node.pdm.search.SpecificationSearchDto;
 import com.alex.web.node.pdm.service.DetailService;
 import com.alex.web.node.pdm.service.SpecificationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/specifications")
@@ -29,6 +31,7 @@ public class SpecificationController {
     public String findById(@PathVariable Long id,
                            Model model,
                            @RequestHeader(required = false) String referer) {
+        log.info("--start 'find specification by id' endpoint--");
         model.addAllAttributes(Map.of("spec", specificationService.findById(id), "referer", referer));
         return "specification/specification";
     }
@@ -40,6 +43,7 @@ public class SpecificationController {
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes
     ) {
+        log.info("--start 'find all specifications' endpoint--");
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("errorsSearch", bindingResult.getFieldErrors());
             return "redirect:/specifications";
@@ -57,6 +61,7 @@ public class SpecificationController {
     public String findAllDetailsBySpecId(Model model,
                                          @RequestHeader(required = false, defaultValue = "/specifications") String referer,
                                          @PathVariable Long specId) {
+        log.info("--start 'find all detail by specification id' endpoint--");
         model.addAllAttributes(Map.of(
                 "details", detailService.findAllBySpecId(specId),
                 "specId", specId,
@@ -71,6 +76,7 @@ public class SpecificationController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes
     ) {
+        log.info("--start 'create a new specification' endpoint--");
         if (bindingResult.hasErrors())
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
         else
@@ -85,6 +91,7 @@ public class SpecificationController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes
     ) {
+        log.info("--start 'update specification by id' endpoint--");
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/specifications/{id}";
@@ -95,6 +102,7 @@ public class SpecificationController {
 
     @PostMapping("/delete")
     public String delete(@RequestParam Long specId) {
+        log.info("--start 'delete specification by id' endpoint--");
         specificationService.delete(specId);
         return "redirect:/specifications";
     }

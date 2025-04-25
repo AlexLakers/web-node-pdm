@@ -3,10 +3,13 @@ package com.alex.web.node.pdm.repository;
 import com.alex.web.node.pdm.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.history.RevisionRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends
+        JpaRepository<User, Long>,
+        RevisionRepository<User,Long,Integer> {
 
     /*  @EntityGraph(attributePaths = {"roles"},type = EntityGraph.EntityGraphType.FETCH)*/
     @Query("select u from User u " +

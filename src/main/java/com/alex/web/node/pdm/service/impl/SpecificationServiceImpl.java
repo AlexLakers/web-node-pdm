@@ -18,6 +18,7 @@ import com.alex.web.node.pdm.service.LogMessageService;
 import com.alex.web.node.pdm.service.SpecificationService;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
@@ -42,6 +44,7 @@ public class SpecificationServiceImpl implements SpecificationService {
 
 
     public Page<SpecificationDto> findAll(SpecificationSearchDto searchDto) {
+        log.debug("The method 'findAll' with arg:{}", searchDto);
         Sort sort = SortBuilder.builder()
                 .add(searchDto.orderDirection(), searchDto.orderColumn(), Sort.Order::new)
                 .build();
@@ -52,16 +55,9 @@ public class SpecificationServiceImpl implements SpecificationService {
         Pageable pageable = buildPageable(searchDto, sort);
         Page<SpecificationDto> page = specificationRepository.findAll(predicate, pageable)
                 .map(specificationMapper::toSpecificationDto);
+        log.info("Page of specifications has been generated:{}", page);
         return page;
     }
-
-  /*  public Page<SpecificationDto> findAll(SpecificationSearch search, Pageable pageable) {
-        Predicate predicate = PredicateBuilder.builder()
-                .add(search.code(), QSpecification.specification.code::contains)
-                .add(search.userId(), QSpecification.specification.user.id::eq)
-                .and();
-        return specificationRepository.findAll(predicate, pageable).map(specificationMapper::toSpecificationDto);
-    }*/
 
     private Pageable buildPageable(SpecificationSearchDto searchDto, Sort sort) {
         return PageRequest.of(
@@ -69,33 +65,36 @@ public class SpecificationServiceImpl implements SpecificationService {
                 searchDto.pageSize() == null ? DEFAULT_PAGE_SIZE : searchDto.pageSize(),
                 sort);
 
-      /*  searchDto.pageNumber() == null && searchDto.pageSize() == null
-                ? PageRequest.of(DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, sort)
-                : PageRequest.of(searchDto.pageNumber(), searchDto.pageSize(), sort);*/
     }
 
 
     @Override
     public SpecificationDto findByCode(String code) {
+        log.debug("The method 'findByCode' with arg:{}", code);
         SpecificationDto dto = specificationRepository.findByCode(code)
                 .map(specificationMapper::toSpecificationDto)
                 .orElseThrow(() -> new EntityNotFoundException("The spec with code '%1$s' is not found".formatted(code)));
+        log.info("Founded specification by code:{}", dto);
         return dto;
     }
 
 
     @Override
     public SpecificationDto findById(Long id) {
+        log.debug("The method 'findById' with arg:{}", id);
         SpecificationDto dto = specificationRepository.findById(id)
                 .map(specificationMapper::toSpecificationDto)
                 .orElseThrow(() -> logAndThrowEntityNotFound(id)); /*new EntityNotFoundException("The spec with id '%1$s' is not found".formatted(id))*/
+        log.info("Founded specification by id:{}", dto);
         return dto;
     }
 
 
     @Override
     public List<SpecificationDto> findAllByUserId(Long userId) {
+        log.debug("The method 'findAllByUserId' with arg:{}", userId);
         List<SpecificationDto> dtoList = specificationMapper.toSpecificationDtoList(specificationRepository.findAllByUserId(userId));
+        log.info("Founded list of specification by userId:{}", dtoList);
         return dtoList;
     }
 
@@ -103,13 +102,14 @@ public class SpecificationServiceImpl implements SpecificationService {
     @Override
     @Transactional
     public SpecificationDto create(NewSpecificationDto newSpecificationDto) {
+        log.debug("The method 'create' with arg:{}", newSpecificationDto);
         logAndThrowIfCodeIsExists(newSpecificationDto.code());
         SpecificationDto dto= Optional.of(newSpecificationDto)
                 .map(specificationMapper::toSpecification)
                 .map(specificationRepository::save)
                 .map(specificationMapper::toSpecificationDto)
                 .orElseThrow(() -> new EntityCreationException("Spec '%1$s' creation error".formatted(newSpecificationDto.code())));
-
+        log.info("Created a new specification:{}",dto);
         return dto;
     }
 
@@ -132,6 +132,7 @@ public class SpecificationServiceImpl implements SpecificationService {
     @Override
     @Transactional
     public SpecificationDto update(Long id, UpdateSpecificationDto dto) {
+        log.debug("The method 'update' with arg:{}", dto);
         Specification specification = specificationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("The spec with id '%1$s' is not found".formatted(id)));
 
@@ -145,6 +146,7 @@ public class SpecificationServiceImpl implements SpecificationService {
                 })
                 .map(specificationMapper::toSpecificationDto)
                 .orElseThrow(() -> logAndThrowEntityNotFound(id));
+        log.info("Updated specification:{}",updatedDto);
         return updatedDto;
 
     }
@@ -152,6 +154,7 @@ public class SpecificationServiceImpl implements SpecificationService {
     @Override
     @Transactional
     public void delete(Long id) {
+        log.debug("The method 'delete' with arg:{}", id);
         specificationRepository.findById(id)
                 .ifPresentOrElse(spec -> {
                             specificationRepository.delete(spec);
@@ -160,5 +163,6 @@ public class SpecificationServiceImpl implements SpecificationService {
                         () -> {
                             throw logAndThrowEntityNotFound(id);
                         });
+        log.info("The specification with id:{} has been deleted", id);
     }
 }

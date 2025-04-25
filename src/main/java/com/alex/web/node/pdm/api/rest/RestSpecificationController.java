@@ -8,6 +8,7 @@ import com.alex.web.node.pdm.search.SpecificationSearchDto;
 import com.alex.web.node.pdm.service.DetailService;
 import com.alex.web.node.pdm.service.SpecificationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/specifications")
 @RequiredArgsConstructor
@@ -38,12 +40,14 @@ public class RestSpecificationController {
             SpecificationSearchDto specificationSearchDto/*SpecificationSearch specificationSearch,
                                                           @PageableDefault(page = 0,size = 20)
                                                           @SortDefault(sort = "id",direction = Sort.Direction.ASC) Pageable pageable*/) {
+        log.info("--start 'find all specifications' rest endpoint--");
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE,MediaType.APPLICATION_JSON_VALUE)
                 .body(specificationService.findAll(specificationSearchDto));
     }
     @GetMapping("/{specId}/details")
     public ResponseEntity<List<DetailDto>> findAllDetailsBySpecId(@PathVariable Long specId){
+        log.info("--start 'find all detail by specification id' rest endpoint--");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -51,6 +55,7 @@ public class RestSpecificationController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<SpecificationDto> findById(@PathVariable("id") Long id) {
+        log.info("--start 'find specification by id' rest endpoint--");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(specificationService.findById(id));
@@ -66,6 +71,7 @@ public class RestSpecificationController {
      }*/
     @PostMapping
     public ResponseEntity<SpecificationDto> create(@RequestBody @Validated NewSpecificationDto newSpecificationDto){
+        log.info("--start 'create a new specification' rest endpoint--");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .header(HttpHeaders.CONTENT_TYPE,MediaType.APPLICATION_JSON_VALUE)
@@ -74,6 +80,7 @@ public class RestSpecificationController {
     @PutMapping("/{id}")
     public ResponseEntity<SpecificationDto> update(@PathVariable Long id,
                                                    @RequestBody @Validated UpdateSpecificationDto updateSpecificationDto){
+        log.info("--start 'update specification by id' rest endpoint--");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE,MediaType.APPLICATION_JSON_VALUE)
@@ -81,6 +88,7 @@ public class RestSpecificationController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<SpecificationDto> delete(@PathVariable Long id){
+        log.info("--start 'delete specification by id' rest endpoint--");
         specificationService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
