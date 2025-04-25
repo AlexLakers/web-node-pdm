@@ -1,0 +1,53 @@
+name:
+  web-node-pdm-service
+services:
+  db:
+    image:
+      postgres:17
+    networks:
+      - backend-net
+    ports:
+      - 5435:5432
+    volumes:
+      - db-data:/var/lib/postgres/data
+    environment:
+      POSTGRES_DB: node_pdm_storage
+      POSTGRES_USER: adminnodepdm
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_pass
+    secrets:
+      - db_pass
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  app:
+    image: web-node-pdm:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BASE_DIR: /web-node-pdm
+        BUILD_PATH: target/*.jar
+    ports:
+      - 8085:8085
+    networks:
+      - backend-net
+    environment:
+      SPRING_DATASOURCE_USERNAME: adminnodepdm
+      SPRING_DATASOURCE_PASSWORD: AdminNodePdmPassword
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      db:
+       condition: service_healthy
+networks:
+  backend-net:
+    driver: bridge
+volumes:
+  db-data:
+secrets:
+  db_pass:
+   file: tmp/secret.txt
+
+
+

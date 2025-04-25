@@ -3,10 +3,13 @@ databaseChangeLog:
       file: db/changelog/1.0/db.changelog-1.0-init.sql
       context: dev
   - include:
-      file: db/changelog/2.0/db.changelog-2.0-log.sql
+      file: db/changelog/1.0/db.changelog-1.1.sql
       context: dev
   - include:
       file: db/changelog/1.0/db.changelog-1.2-core-data.sql
+      context: dev
+  - include:
+      file: db/changelog/2.0/db.changelog-2.0-log.sql
       context: dev
   - include:
       file: db/changelog/2.0/db.changelog-2.1.1-audit.sql

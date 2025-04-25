@@ -1,7 +1,7 @@
 spring:
   datasource:
-    password: root
-    username: root
+    password: AdminNodePdmPassword
+    username: adminnodepdm
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5632/node_pdm_storage
   jpa:
