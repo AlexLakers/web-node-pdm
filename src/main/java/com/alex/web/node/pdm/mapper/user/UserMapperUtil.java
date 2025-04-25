@@ -8,6 +8,9 @@ import org.mapstruct.Named;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * This is util-class for {@link UserMapper mapper}.
+ */
 
 @Named("UserMapperUtil")
 @Component

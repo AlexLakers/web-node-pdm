@@ -16,6 +16,11 @@ import java.util.List;
 
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 
+/**
+ * This is a mapper for {@link User user}.
+ * @see UserMapperUtil util.
+ */
+
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         uses = {UserMapperUtil.class},

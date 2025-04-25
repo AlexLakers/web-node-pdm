@@ -9,6 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+/**
+ * This class is an object model for database table 'log_message'.
+ */
 
 @Data
 @AllArgsConstructor

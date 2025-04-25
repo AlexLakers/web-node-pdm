@@ -7,6 +7,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+/**
+ * This class contains one additional field (id of user) for authenticated user.
+ *
+ * @see UserDetails userDetails.
+ */
 
 @Getter
 @RequiredArgsConstructor

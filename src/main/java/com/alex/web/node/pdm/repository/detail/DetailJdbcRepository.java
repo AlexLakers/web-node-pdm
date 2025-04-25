@@ -10,6 +10,12 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This is an additional interface which contains all the necessary methods for interaction app with database(table 'details').
+ * Bean 'JdbcTemplate' is used here.
+ *
+ * @see DetailRepository mainDetailRepository
+ */
 
 public interface DetailJdbcRepository {
     List<DetailDto> findDetailsByIds(List<Long> ids);

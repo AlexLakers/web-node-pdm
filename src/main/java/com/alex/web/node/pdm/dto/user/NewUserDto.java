@@ -1,10 +1,22 @@
 package com.alex.web.node.pdm.dto.user;
 
+import com.alex.web.node.pdm.model.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDate;
+/**
+ * This is input dto-object which contains all the necessary fields from {@link User user}.
+ * It is used for creation process a new user.
+ *
+ * @param firstname firstname field from model.
+ * @param lastname  lastname field from model.
+ * @param username  username field from model.
+ * @param password  password field from model.
+ * @param birthday  birthday field from model.
+ */
+
 @FieldNameConstants
 public record NewUserDto(
 
