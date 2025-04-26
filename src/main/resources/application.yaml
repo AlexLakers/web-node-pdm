@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    password: AdminNodePdmPassword
+    username: adminnodepdm
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5632/node_pdm_storage
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    open-in-view: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 862401362633-387mhcrc96o2am9juqhb1eoifj70c9os.apps.googleusercontent.com
+            client-secret: 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
+            scope: openid,profile,email
+            redirect-uri: http://localhost:8085/login/oauth2/code/google
+
+  liquibase:
+    contexts: dev
+server:
+  port: 8085
+
+logging:
+  file:
+    path: /
+    name: logg.log
+  level:
+    root: INFO
+    org.springframework.jdbc.core: TRACE
+

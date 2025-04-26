@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
+    <title>Details</title>
+</head>
+<body>
+<header>
+    <div class="header">
+        <div th:insert="~{header}"></div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="column">
+            <form th:action="@{/details/{specId}/delete(specId=${specId})}" id="deletingForm" method="post">
+                <select id="detail-list" name="detailId" size="20">
+                    <option th:each="detail : ${details}"
+                            th:value="${detail.id()}"
+                            th:text="${detail.id()}+' '+${detail.name()}+ ' '+${detail.amount()}+' '+${detail.specificationId()}">
+                    </option>
+
+                    <!--I stopped here-->
+
+                </select>
+            </form>
+            <div class="button-container">
+                <button class="button-action" type="submit" form="deletingForm">Delete</button>
+                <button class="button-action" type="button" onclick="updateDetail()">Update</button>
+            </div>
+        </div>
+    </div>
+    <h4>Create a new detail</h4>
+    <div class="container">
+        <div class="column">
+            <div th:if="${errors}">
+                <span class="error" th:each="error : ${errors}" th:text="${error.defaultMessage}"> Invalid Data</span>
+            </div>
+            <form th:action="@{/details}" method="post" id="creatingForm">
+                <div>
+                    <label for="name">Name:
+                        <input type="text" name="name" id="name" placeholder="Input unique name"/>
+                    </label>
+                    <label for="amount">Amount:
+                        <input type="number" name="amount" id="amount" placeholder="Input amount(deffault=0)">
+                    </label>
+                    <label for="specId">
+                        <input type="hidden" name="specificationId" id="specId" th:value="${specId}">
+                    </label>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="button-action" form="creatingForm">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<footer>
+    <div class="footer">
+        <div th:insert="~{footer}"></div>
+    </div>
+</footer>
+</body>
+</html>

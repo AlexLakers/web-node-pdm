@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/>
+    <title>Detail</title>
+</head>
+<body>
+<header>
+    <div class="header">
+        <div th:insert="~{header}"></div>
+    </div>
+</header>
+
+<main>
+    <div class="user-container">
+        <h4>Updating a specific detail</h4>
+        <div th:if="${errors}">
+            <span class="error" th:each="error:${errors}" th:text="${error.defaultMessage}">Incorrect Data</span>
+        </div>
+        <form th:action="@{/details/{detailId}/update(detailId=${detail.id})}" id="updatingForm" method="post"
+              th:object="${detail}">
+            <label for="name">Name:
+                <input type="text" name="name" id="name" th:value="*{name}" placeholder="unique name"/>
+            </label>
+            <label for="amount">Amount:
+                <input type="number" name="amount" id="amount" th:value="*{amount}" placeholder="input amount">
+            </label>
+            <div class="button-container">
+                <button class="button-action" type="submit" form="updatingForm">Update</button>
+            </div>
+        </form>
+    </div>
+</main>
+<footer>
+    <div class="footer">
+        <div th:insert="~{footer}"></div>
+    </div>
+</footer>
+</body>
+</html>
