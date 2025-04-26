@@ -1,5 +1,5 @@
 name:
-  web-node-pdm-service
+  web-node-pdm-servicee
 services:
   db:
     image:
