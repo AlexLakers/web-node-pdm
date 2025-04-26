@@ -11,6 +11,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is an object model for database table 'users'.
+ *
+ * @see Provider provider
+ * @see Role role
+ * @see Specification specification
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

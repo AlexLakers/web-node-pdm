@@ -7,6 +7,11 @@ import org.springframework.data.domain.Sort;
 import java.util.*;
 import java.util.function.BiFunction;
 
+/**
+ * This class contains functional for building Sort-object by few condition.
+ *  It is used for sorting data by fields.
+ */
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SortBuilder {
     private static final String DEFAULT_SORT_PROPERTY = "id";

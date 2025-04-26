@@ -14,6 +14,11 @@ import java.util.Optional;
 
 import static org.mapstruct.NullValuePropertyMappingStrategy.*;
 
+/**
+ * This is a mapper for {@link Detail detail}.
+ * @see DetailMapperDecorator decorator.
+ */
+
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
       //  uses = DetailMapperUtil.class,
        // uses = SpecificationRepository.class,

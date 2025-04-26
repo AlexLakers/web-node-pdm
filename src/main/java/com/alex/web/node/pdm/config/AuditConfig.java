@@ -1,4 +1,4 @@
-package com.alex.web.node.pdm.config.security;
+package com.alex.web.node.pdm.config;
 
 import com.alex.web.node.pdm.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.security.Principal;
 import java.util.Optional;
 
 @EnableJpaAuditing

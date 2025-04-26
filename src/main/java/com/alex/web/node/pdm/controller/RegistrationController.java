@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Map;
 
+/**
+ * This class provides endpoint to handle registration-request from user.
+ *  It represents a registration page.
+ */
+
 @Controller
 @RequiredArgsConstructor
 public class RegistrationController {

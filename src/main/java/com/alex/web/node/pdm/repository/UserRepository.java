@@ -7,6 +7,10 @@ import org.springframework.data.repository.history.RevisionRepository;
 
 import java.util.Optional;
 
+/**
+ * This interface contains all the necessary methods for interaction app with database(table 'users').
+ */
+
 public interface UserRepository extends
         JpaRepository<User, Long>,
         RevisionRepository<User,Long,Integer> {

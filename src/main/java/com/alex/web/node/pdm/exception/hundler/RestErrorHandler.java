@@ -1,5 +1,8 @@
 package com.alex.web.node.pdm.exception.hundler;
 
+import com.alex.web.node.pdm.api.rest.RestDetailController;
+import com.alex.web.node.pdm.api.rest.RestSpecificationController;
+import com.alex.web.node.pdm.api.rest.RestUserController;
 import com.alex.web.node.pdm.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -9,6 +12,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+/**
+ * This class contains the methods for handling exceptions which throws in rest-controller layer.
+ *
+ * @see RestUserController restUserController
+ * @see RestSpecificationController restSpecificationController.
+ * @see RestDetailController restDetailController.
+ */
 
 @RestControllerAdvice(basePackages = "com.alex.web.node.pdm.api.rest")
 @Slf4j

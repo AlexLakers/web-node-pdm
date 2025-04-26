@@ -10,6 +10,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
+/**
+ * This class is an additional part object model  for database tables 'users' and 'users_roles'.
+ *
+ * @see User user
+ * @see RoleName roleName
+ */
+
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

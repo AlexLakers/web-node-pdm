@@ -1,5 +1,8 @@
 package com.alex.web.node.pdm.exception.hundler;
 
+import com.alex.web.node.pdm.controller.DetailController;
+import com.alex.web.node.pdm.controller.SpecificationController;
+import com.alex.web.node.pdm.controller.UserController;
 import com.alex.web.node.pdm.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,6 +13,14 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+/**
+ * This class contains the methods for handling exceptions which throws in controller layer.
+ *
+ * @see UserController userController
+ * @see SpecificationController specificationController.
+ * @see DetailController detailController.
+ */
 
 @ControllerAdvice(basePackages = "com.alex.web.node.pdm.controller")
 @Slf4j

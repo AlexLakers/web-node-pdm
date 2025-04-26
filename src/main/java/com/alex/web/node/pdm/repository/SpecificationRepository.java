@@ -14,6 +14,10 @@ import org.springframework.data.repository.history.RevisionRepository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This interface contains all the necessary methods for interaction app with database(table 'specifications').
+ */
+
 public interface SpecificationRepository extends
         JpaRepository<Specification, Long>,
         QuerydslPredicateExecutor<Specification>,

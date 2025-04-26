@@ -28,12 +28,27 @@ public class RestUserController {
     private final UserService userService;
     private final SpecificationService specificationService;
 
+    /**
+     * Returns status and output-dto formatted .JSON of created entity.
+     *
+     * @param newUserDto input-dto.
+     * @return output-dto.
+     */
+
     @PostMapping
     public ResponseEntity<UserDto> create(@Validated @RequestBody NewUserDto newUserDto) {
         log.info("--start 'create a new user' rest endpoint--");
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.create(newUserDto));
     }
+
+    /**
+     * Returns status and output-dto formatted .JSON by id of user.
+     *
+     * @param id       id of user.
+     * @param authUser current logged user from security context.
+     * @return output-dto.
+     */
 
     @GetMapping("/{id}")
     @PreAuthorize("#authUser.id==#id OR hasAuthority('ADMIN')")
@@ -47,6 +62,12 @@ public class RestUserController {
 
     }
 
+    /**
+     * Returns status and list of output-dto formatted .JSON without any criteria.
+     *
+     * @return list of output-dto.
+     */
+
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll() {
         log.info("--start 'find all specifications  for user by id' rest endpoint--");
@@ -54,6 +75,14 @@ public class RestUserController {
         return ResponseEntity.ok().body(users);
 
     }
+    /**
+     * Returns status and list of output-specification-dto formatted .JSON by id of user.
+     *
+     * @param userId   id of user.
+     * @param authUser current logged user from security context.
+     * @return output dto of specification.
+     */
+
     @GetMapping("/{userId}/specifications")
     @PreAuthorize("#authUser.id==#userId OR hasAuthority('ADMIN')")
     public ResponseEntity<List<SpecificationDto>> findAllSpecificationsByUserId(@PathVariable Long userId,
@@ -64,6 +93,15 @@ public class RestUserController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(specificationService.findAllByUserId(userId));
     }
+
+    /**
+     * Returns status and updated output-dto formatted .JSON by input-dto and id of user.
+     *
+     * @param id            id of user.
+     * @param updateUserDto input-dto.
+     * @param authUser      current logged user from security context.
+     * @return output-dto.
+     */
 
     @PutMapping("/{id}")
     @PreAuthorize("#authUser.id==#id OR hasAuthority('ADMIN')")
@@ -76,6 +114,14 @@ public class RestUserController {
                 .body(userService.update(id, updateUserDto));
 
     }
+
+    /**
+     * Returns status of deleting operation.
+     *
+     * @param id       if of user.
+     * @param authUser current logged user from security context.
+     * @return http-status.
+     */
 
     @DeleteMapping("/{id}")
     @PreAuthorize("#authUser.id==#id OR hasAuthority('ADMIN')")

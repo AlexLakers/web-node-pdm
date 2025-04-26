@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This is a util-class for {@link SpecificationMapper mapper}.
+ */
+
 @Component
 @Named("SpecificationMapperUtil")
 public class SpecificationMapperUtil {

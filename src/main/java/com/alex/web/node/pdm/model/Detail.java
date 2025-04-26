@@ -5,6 +5,10 @@ import lombok.*;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
+/**
+ * This class is an object model for database table 'detail'.
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

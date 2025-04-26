@@ -11,6 +11,12 @@ import java.util.List;
 
 import static org.mapstruct.NullValuePropertyMappingStrategy.*;
 
+/**
+ * This is a mapper for {@link Specification specification}.
+ * @see SpecificationMapperDecorator decorator.
+ * @see SpecificationMapperUtil util.
+ */
+
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         builder = @Builder(disableBuilder = true),

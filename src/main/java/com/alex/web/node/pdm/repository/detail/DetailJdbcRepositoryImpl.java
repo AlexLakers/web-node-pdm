@@ -21,6 +21,9 @@ import java.util.stream.Collectors;
 
 import static com.alex.web.node.pdm.dto.detail.DetailDto.*;
 
+/**
+ * This class includes functional which implements additional repository-interface {@link DetailJdbcRepository detailJdbcRepository}.
+ */
 
 @RequiredArgsConstructor
 public class DetailJdbcRepositoryImpl implements DetailJdbcRepository {

@@ -1,5 +1,6 @@
 package com.alex.web.node.pdm.model;
 
+import com.alex.web.node.pdm.model.enums.Provider;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,6 +11,11 @@ import org.hibernate.envers.RelationTargetAuditMode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is an object model for database table 'users'.
+ * @see Detail detail
+ * @see User specification
+ */
 
 @Data
 @NoArgsConstructor

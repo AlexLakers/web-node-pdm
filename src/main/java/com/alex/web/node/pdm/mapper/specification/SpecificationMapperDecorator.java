@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/**
+ * This is a decorator for {@link SpecificationMapper mapper}.
+ */
+
 @Component
 public abstract class SpecificationMapperDecorator implements SpecificationMapper {
     @Autowired
