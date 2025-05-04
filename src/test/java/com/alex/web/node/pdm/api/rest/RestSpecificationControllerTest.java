@@ -113,12 +113,8 @@ class RestSpecificationControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/v1/specifications")
-                        .param("userId", "1")
-                        .param("code", "testCode")
-                        .param("pageNumber", "0")
-                        .param("pageSize", "20")
-                        .param("sortDirection", "ASC")
-                        .param("sortColumn", "id")
+                        .content(objectMapper.writeValueAsString(searchDto))
+                                .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
 
                 )

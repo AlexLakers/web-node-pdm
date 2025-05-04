@@ -49,7 +49,7 @@ public class RestSpecificationController {
     @GetMapping
     public ResponseEntity<Page<SpecificationDto>> findAll(/*@RequestParam(defaultValue = "0") Integer pageNumber,
                                                           @RequestParam(defaultValue = "20") Integer pageSize,*/
-            SpecificationSearchDto specificationSearchDto/*SpecificationSearch specificationSearch,
+            @RequestBody @Validated SpecificationSearchDto specificationSearchDto/*SpecificationSearch specificationSearch,
                                                           @PageableDefault(page = 0,size = 20)
                                                           @SortDefault(sort = "id",direction = Sort.Direction.ASC) Pageable pageable*/) {
         log.info("--start 'find all specifications' rest endpoint--");

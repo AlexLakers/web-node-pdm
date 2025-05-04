@@ -8,7 +8,6 @@ RUN apk add git openjdk21
 
 RUN git clone https://github.com/AlexLakers/web-node-pdm.git
 WORKDIR $BASE_DIR
-RUN git pull
 RUN git checkout prod
 RUN ./mvnw package
 
