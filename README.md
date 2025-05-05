@@ -9,6 +9,7 @@ Possible, you will want to use data from this service in your app then you need 
 ## More datails 
 The main page of this app allows you go to any page using header buttons.
 ![alt text](https://github.com/AlexLakers/prop-test/blob/main/pictures/5.png?raw=true)
+![alt text](https://github.com/AlexLakers/ParserJsonCsvToXml/tree/master/WinFormsCsvJsonXml/App_Data/pictures/5.png?raw=true)
 
 For example, if you are not authenticated user then you can click on 'Registartion' page and finish registartions operation.
 Similary, you can go to login page,logout, profile of current user and so on.
