@@ -36,18 +36,4 @@ public interface DetailMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     void updateDetail(UpdateDetailDto updateDetailDto, @MappingTarget Detail detail);
 
-/*@AfterMapping
-    public void setSpecification(NewDetailDto newDetailDto,@MappingTarget Detail detail) {
-        Optional.ofNullable(newDetailDto.specificationId())
-                .flatMap(specificationRepository::findById)
-                .ifPresentOrElse(
-        detail::setSpecification,
-                        () -> {
-        throw new SpecificationNotFoundException(
-                                    "The specification with id=" + newDetailDto.specificationId() + "is not found");
-        });
-
-
-    }*/
-
 }
