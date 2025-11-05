@@ -3,7 +3,7 @@ package com.alex.web.node.pdm.validator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.data.domain.Sort;
-
+//This class is a validator handler for ordering
 public class OrderDirectionValidator implements ConstraintValidator<ValidOrderDirection, String> {
 
     @Override
