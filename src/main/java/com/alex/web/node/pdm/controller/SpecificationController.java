@@ -172,7 +172,7 @@ public class SpecificationController {
      */
 
     @PostMapping("/delete")
-    public String delete(@RequestParam Long specId) {
+    public String delete(@RequestParam("specId") Long specId) {
         log.info("--start 'delete specification by id' endpoint--");
         specificationService.delete(specId);
         return "redirect:/specifications";
