@@ -154,6 +154,15 @@ public class UserServiceImpl implements UserService {
         return Optional.ofNullable(userRepository.save(user))
                 .orElseThrow(() -> new EntityCreationException("User '%1$s' creation error".formatted(email)));
     }
+//TThis method for debugging
+    private void handle(){
+        ExecutorService executor = Executors.fixedThreadPool(3);
+        Stream<String> stream = Stream.of("1","2","3");
+        str.stream()
+            .map(s->String::toUpperCase)
+            .peek(System.out.println)
+            .limit(3);
+    }
 
 }
 
